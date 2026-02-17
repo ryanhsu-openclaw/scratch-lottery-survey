@@ -39,6 +39,17 @@
       color: var(--muted);
     }
 
+    .warning {
+      margin: 8px auto 16px;
+      max-width: 640px;
+      font-size: 12px;
+      color: #fecaca;
+      background: #450a0a;
+      border: 1px solid #b91c1c;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
     .layout {
       display: grid;
       gap: 16px;
@@ -76,8 +87,8 @@
     }
     .checkbox-group {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 4px 12px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 6px 12px;
       margin-top: 4px;
     }
     .checkbox-group label {
@@ -135,6 +146,18 @@
       font-size: 12px;
       color: var(--muted);
     }
+
+    .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
+    }
+    .step-indicator {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body>
@@ -144,57 +167,81 @@
     <div class="subtitle">說實話：你是「賀歲財神」，還是默默扛起台彩營收的一份子？</div>
   </header>
 
+  <div class="warning">⚠️ 台灣法規：未滿 18 歲不得購買或兌領彩券（包括刮刮樂）。本問卷僅供滿 18 歲以上民眾分享經驗。</div>
+
   <div class="layout">
     <section class="card">
       <h2>填寫你的過年刮刮樂戰報</h2>
+      <div class="step-indicator" id="step-indicator">第 1 題，共 5 題</div>
       <form id="survey-form">
-        <label for="age">你幾歲？</label>
-        <select id="age" name="age" required>
-          <option value="" disabled selected>請選擇年齡區間</option>
-          <option>未滿 18 歲（小賭怡情，更要節制）</option>
-          <option>18–24 歲</option>
-          <option>25–34 歲</option>
-          <option>35–44 歲</option>
-          <option>45–54 歲</option>
-          <option>55–64 歲</option>
-          <option>65 歲以上</option>
-        </select>
-
-        <label for="city">在哪裡過年？</label>
-        <select id="city" name="city" required>
-          <option value="" disabled selected>請選擇縣市</option>
-          <option>台北市</option><option>新北市</option><option>基隆市</option>
-          <option>桃園市</option><option>新竹市</option><option>新竹縣</option>
-          <option>苗栗縣</option><option>台中市</option><option>彰化縣</option>
-          <option>南投縣</option><option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
-          <option>台南市</option><option>高雄市</option><option>屏東縣</option>
-          <option>宜蘭縣</option><option>花蓮縣</option><option>台東縣</option>
-          <option>澎湖縣</option><option>金門縣</option><option>連江縣</option>
-        </select>
-
-        <label>你今年都買了哪些刮刮樂？（可複選）</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="types" value="100 元小試手氣">100 元小試手氣</label>
-          <label><input type="checkbox" name="types" value="200 元經典款">200 元經典款</label>
-          <label><input type="checkbox" name="types" value="500 元大紅包">500 元大紅包</label>
-          <label><input type="checkbox" name="types" value="1000 元超級紅包">1000 元超級紅包</label>
-          <label><input type="checkbox" name="types" value="3000 元頂級豪華">3000 元頂級豪華</label>
-          <label><input type="checkbox" name="types" value="其他">其他 / 想不出名字的神秘款</label>
+        <!-- Step 1: Age -->
+        <div class="step active" data-step="1">
+          <label for="age">你幾歲？</label>
+          <select id="age" name="age" required>
+            <option value="" disabled selected>請選擇年齡區間（僅限 18 歲以上）</option>
+            <option>18–24 歲</option>
+            <option>25–34 歲</option>
+            <option>35–44 歲</option>
+            <option>45–54 歲</option>
+            <option>55–64 歲</option>
+            <option>65 歲以上</option>
+          </select>
+          <div class="hint">提醒：未滿 18 歲不得購買彩券。本問卷僅供成年後的小賭心得分享。</div>
+          <button type="button" data-next>下一題：在哪裡過年？</button>
         </div>
-        <div class="hint">（類型之後可以再依台彩官方品項微調）</div>
 
-        <label for="spent">總共買了多少錢的刮刮樂？（元）</label>
-        <input id="spent" name="spent" type="number" inputmode="decimal" min="0" step="1" required>
-        <div class="hint">請填入整數，例如 2000。</div>
+        <!-- Step 2: City -->
+        <div class="step" data-step="2">
+          <label for="city">在哪裡過年？</label>
+          <select id="city" name="city" required>
+            <option value="" disabled selected>請選擇縣市</option>
+            <option>台北市</option><option>新北市</option><option>基隆市</option>
+            <option>桃園市</option><option>新竹市</option><option>新竹縣</option>
+            <option>苗栗縣</option><option>台中市</option><option>彰化縣</option>
+            <option>南投縣</option><option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
+            <option>台南市</option><option>高雄市</option><option>屏東縣</option>
+            <option>宜蘭縣</option><option>花蓮縣</option><option>台東縣</option>
+            <option>澎湖縣</option><option>金門縣</option><option>連江縣</option>
+          </select>
+          <button type="button" data-next>下一題：買了哪些刮刮樂？</button>
+        </div>
 
-        <label for="won">最後贏了多少錢？（可填負值，負代表賠錢）</label>
-        <input id="won" name="won" type="number" inputmode="decimal" step="1" required>
-        <div class="hint">例如：贏 5000 就填 5000；整體小賠 800 就填 -800。</div>
+        <!-- Step 3: Scratch games -->
+        <div class="step" data-step="3">
+          <label>你今年都買了哪些刮刮樂？（可複選）</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="types" value="馬年行大運（100 元）">馬年行大運（100 元）</label>
+            <label><input type="checkbox" name="types" value="大三元（200 元）">大三元（200 元）</label>
+            <label><input type="checkbox" name="types" value="海底大尋寶（300 元）">海底大尋寶（300 元）</label>
+            <label><input type="checkbox" name="types" value="五路財神（500 元）">五路財神（500 元）</label>
+            <label><input type="checkbox" name="types" value="金馬獎（500 元）">金馬獎（500 元，100% 中獎率）</label>
+            <label><input type="checkbox" name="types" value="1200 萬大吉利（1000 元）">1200 萬大吉利（1000 元）</label>
+            <label><input type="checkbox" name="types" value="2000 萬超級紅包（2000 元）">2000 萬超級紅包（2000 元）</label>
+            <label><input type="checkbox" name="types" value="其他">其他 / 上面沒列到的款式</label>
+          </div>
+          <div class="hint">品名參考近期台彩馬年刮刮樂（實際購買若不同也沒關係，勾大致系列即可）。</div>
+          <button type="button" data-next>下一題：總共花了多少？</button>
+        </div>
 
-        <label for="nickname">給自己取一個刮刮樂稱號（可選填）</label>
-        <input id="nickname" name="nickname" type="text" placeholder="例如：中獎只會回本仔、刮到手軟卻沒中…">
+        <!-- Step 4: Spent -->
+        <div class="step" data-step="4">
+          <label for="spent">總共買了多少錢的刮刮樂？（元）</label>
+          <input id="spent" name="spent" type="number" inputmode="decimal" min="0" step="1" required>
+          <div class="hint">請填入整數，例如 2000。</div>
+          <button type="button" data-next>最後一題：實際贏 / 賠多少？</button>
+        </div>
 
-        <button type="submit">送出戰報，看看我是財神還是贊助商</button>
+        <!-- Step 5: Won + nickname -->
+        <div class="step" data-step="5">
+          <label for="won">最後贏了多少錢？（可填負值，負代表賠錢）</label>
+          <input id="won" name="won" type="number" inputmode="decimal" step="1" required>
+          <div class="hint">例如：贏 5000 就填 5000；整體小賠 800 就填 -800。</div>
+
+          <label for="nickname">給自己取一個刮刮樂稱號（可選填）</label>
+          <input id="nickname" name="nickname" type="text" placeholder="例如：中獎只會回本仔、刮到手軟卻沒中…">
+
+          <button type="submit">送出戰報，看看我是財神還是贊助商</button>
+        </div>
       </form>
       <div class="footer-note">＊資料會匿名寫入 Google Sheets 做統計使用，不會收集聯絡方式。</div>
     </section>
@@ -213,6 +260,31 @@
 
   const form = document.getElementById("survey-form");
   const resultCard = document.getElementById("result-card");
+  const stepIndicator = document.getElementById("step-indicator");
+  const steps = Array.from(document.querySelectorAll(".step"));
+
+  function showStep(n) {
+    steps.forEach((step, idx) => {
+      step.classList.toggle("active", idx === n - 1);
+    });
+    stepIndicator.textContent = `第 ${n} 題，共 ${steps.length} 題`;
+  }
+
+  // 按「下一題」切換步驟
+  steps.forEach((step, idx) => {
+    const nextBtn = step.querySelector("[data-next]");
+    if (!nextBtn) return;
+    nextBtn.addEventListener("click", () => {
+      const inputs = step.querySelectorAll("select, input[required]");
+      for (const input of inputs) {
+        if (!input.value) {
+          input.reportValidity();
+          return;
+        }
+      }
+      showStep(idx + 2);
+    });
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -244,7 +316,7 @@
 
     const title = net >= 0 ? "恭喜，你是這波的財神之一！" : "辛苦了，你正式成為台彩無名股東。";
     const main = `這次你總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
-    const compare = `依照目前的模擬分佈，你大約贏過約 ${percentile}% 的參與者。`; 
+    const compare = `依照目前的模擬分佈，你大約贏過約 ${percentile}% 的參與者。`;
 
     let banner;
     if (net > 0) {
@@ -265,7 +337,6 @@
       <div class="result-banner">${banner}</div>
     `;
 
-    // 嘗試把資料送到 Google Sheets（非必要，失敗也不影響結果顯示）
     const payload = {
       timestamp: new Date().toISOString(),
       age,
@@ -281,7 +352,7 @@
     try {
       await fetch(SHEET_ENDPOINT, {
         method: "POST",
-        mode: "no-cors", // Apps Script 常用
+        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
