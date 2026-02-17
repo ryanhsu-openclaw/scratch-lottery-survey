@@ -35,7 +35,6 @@
       position: relative;
     }
 
-    /* hero 裝飾 */
     .hero-strip {
       display: flex;
       align-items: center;
@@ -325,14 +324,22 @@
       font-size: 16px;
     }
 
-    .type-pill {
+    .type-section-title {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #7f1d1d;
+    }
+    .type-label-big {
       display: inline-block;
       margin-top: 6px;
-      padding: 3px 10px;
+      padding: 6px 14px;
       border-radius: 999px;
-      background: rgba(252, 211, 77, .3);
-      color: #92400e;
-      font-size: 13px;
+      background: linear-gradient(90deg, #fbbf24, #f97316);
+      color: #451a03;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: .08em;
     }
 
     .result-actions {
@@ -363,9 +370,6 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="decor-coin coin-left"></div>
-  <div class="decor-coin coin-right"></div>
-
   <div class="hero-strip">
     <div class="hero-text">
       <div class="hero-title">🧧 馬年刮刮樂戰績大調查</div>
@@ -605,15 +609,16 @@
     "刮到手酸但還笑得出來型"
   ];
 
+  // 8 種幽默類型稱號 + 對應「不合」的反差稱號
   const TYPE_RULES = [
-    { key: 'A', name: '高倍彩神型', good: '適合偶爾重押一波、但能理性停手的人。', bad: '不適合心情容易被輸贏影響、或一輸就想加碼的人。' },
-    { key: 'B', name: '穩健回本型', good: '適合有預算上限、願意把刮刮樂當作娛樂費的人。', bad: '不適合期待「靠一次刮出財富自由」的人。' },
-    { key: 'C', name: '小賠享樂型', good: '適合把刮刮樂當成過年聚會氣氛的催化劑。', bad: '不適合對金錢壓力很敏感、看到小賠就睡不著的人。' },
-    { key: 'D', name: '豪爽贊助商型', good: '適合收入穩定、把這筆錢當作年度娛樂預算的人。', bad: '不適合本來就資金吃緊、要靠這筆錢過生活的人。' },
-    { key: 'E', name: '零損平手型', good: '適合喜歡「有參與感但不想太心累」的玩家。', bad: '不適合追求極限刺激、想要翻倍或全押的人。' },
-    { key: 'F', name: '觀戰分析型', good: '適合愛看機率、統計，跟朋友一起討論玩法的人。', bad: '不適合完全不在乎規則，只想隨便亂買的人。' },
-    { key: 'G', name: '家族同樂型', good: '適合全家一起小額分散，當作過年活動一環。', bad: '不適合單槍匹馬硬拚高面額、壓力太大的人。' },
-    { key: 'H', name: '理財冷靜型', good: '適合理性又自律、願意把大部分資金留在投資的人。', bad: '不適合喜歡「靠運氣翻本」、容易被旁人拱上頭的人。' }
+    { key: 'A', name: '高倍數梭哈財神', clash: '小心翼翼理財馬' },
+    { key: 'B', name: '穩健回本心靈股東', clash: '豪爽贊助股東' },
+    { key: 'C', name: '小賠當買氣氛型', clash: '高倍數梭哈財神' },
+    { key: 'D', name: '台彩年度 VIP 贊助商', clash: '小心翼翼理財馬' },
+    { key: 'E', name: '佛系零損平手王', clash: '高倍數梭哈財神' },
+    { key: 'F', name: '邊刮邊當資料科學家', clash: '隨便亂買跟風王' },
+    { key: 'G', name: '全家歡樂揪團長', clash: '一人默默高面額戰士' },
+    { key: 'H', name: '小心翼翼理財馬', clash: '台彩年度 VIP 贊助商' }
   ];
 
   function showStep(n) {
@@ -690,14 +695,14 @@
     const roi = spent > 0 ? (net / spent) * 100 : 0;
     const hasHighRoller = /1200萬大吉利|2000萬超級紅包/.test(typesStr || "");
 
-    if (net > 0 && roi >= 50) return TYPE_RULES[0];            // 高倍彩神型
-    if (roi >= 0 && roi < 50) return TYPE_RULES[1];            // 穩健回本型
-    if (roi < 0 && roi > -30) return TYPE_RULES[2];            // 小賠享樂型
-    if (roi <= -60 || hasHighRoller) return TYPE_RULES[3];     // 豪爽贊助商型
-    if (net === 0) return TYPE_RULES[4];                        // 零損平手型
-    if (spent === 0 && net === 0) return TYPE_RULES[5];         // 觀戰分析型
-    if (spent > 0 && /馬年行大運|財神報到|財源滾滾/.test(typesStr || "")) return TYPE_RULES[6]; // 家族同樂型
-    return TYPE_RULES[7];                                       // 理財冷靜型
+    if (net > 0 && roi >= 50) return TYPE_RULES[0];            // 高倍數梭哈財神
+    if (roi >= 0 && roi < 50) return TYPE_RULES[1];            // 穩健回本心靈股東
+    if (roi < 0 && roi > -30) return TYPE_RULES[2];            // 小賠當買氣氛型
+    if (roi <= -60 || hasHighRoller) return TYPE_RULES[3];     // 台彩年度 VIP 贊助商
+    if (net === 0) return TYPE_RULES[4];                        // 佛系零損平手王
+    if (spent === 0 && net === 0) return TYPE_RULES[5];         // 邊刮邊當資料科學家
+    if (spent > 0 && /馬年行大運|財神報到|財源滾滾/.test(typesStr || "")) return TYPE_RULES[6]; // 全家歡樂揪團長
+    return TYPE_RULES[7];                                       // 小心翼翼理財馬
   }
 
   form.addEventListener("submit", async (e) => {
@@ -754,9 +759,10 @@
       <div class="confetti-row">🎊 🎉 🧧</div>
       <div class="result-main">${main}</div>
       <div class="result-detail">${compare}</div>
-      <div class="result-detail"><span class="type-pill">您的類型：${typeInfo.name}</span></div>
-      <div class="result-detail">適合您的狀況：${typeInfo.good}</div>
-      <div class="result-detail">不太適合的情境：${typeInfo.bad}</div>
+      <div class="type-section-title">合適的類型</div>
+      <div class="result-detail"><span class="type-label-big">${typeInfo.name}</span></div>
+      <div class="type-section-title">容易吵架的類型</div>
+      <div class="result-detail"><span class="type-label-big">${typeInfo.clash}</span></div>
       <div class="result-banner">${banner}</div>
       <div class="result-actions">
         <button type="button" onclick="downloadResultImage()">下載成果</button>
