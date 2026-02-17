@@ -54,6 +54,17 @@
       width: 100%;
       height: auto;
     }
+
+    @media (min-width: 1024px) {
+      .hero-banner-wrap {
+        max-height: 260px;
+      }
+      .hero-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
     .hero-text-block {
       margin-top: 10px;
       color: #fef2f2;
@@ -71,11 +82,8 @@
     .layout {
       display: grid;
       gap: 18px;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+      grid-template-columns: 1fr;
       align-items: flex-start;
-    }
-    @media (max-width: 840px) {
-      .layout { grid-template-columns: 1fr; }
     }
 
     .card {
