@@ -6,10 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
-      --bg: #7e1b20;
-      --bg-light: #fef2f2;
+      --bg-top: #fee2e2;
+      --bg-mid: #f97316;
+      --bg-bottom: #7f1d1d;
       --panel: #fff7ed;
-      --border: #fecaca;
+      --border: #fed7aa;
       --accent: #f97316;
       --accent-strong: #ea580c;
       --accent-soft: rgba(248, 113, 113, 0.15);
@@ -21,82 +22,81 @@
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at top, #fecaca 0, #be123c 40%, #7e1b20 70%, #450a0a 100%);
+        radial-gradient(circle at top, var(--bg-top) 0, var(--bg-mid) 45%, var(--bg-bottom) 90%);
       color: var(--text);
-      font-size: 16px;
+      font-size: 17px;
     }
     .wrap {
       max-width: 960px;
       margin: 0 auto;
-      padding: 16px 14px 40px;
+      padding: 20px 16px 40px;
     }
     header {
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
       color: #fef2f2;
     }
     h1 {
-      margin: 0 0 4px;
-      font-size: 28px;
+      margin: 0 0 6px;
+      font-size: 30px;
     }
     .subtitle {
-      font-size: 15px;
-      opacity: 0.9;
+      font-size: 16px;
+      opacity: 0.95;
     }
 
     .lantern-row {
       display: flex;
       justify-content: center;
-      gap: 16px;
-      margin: 8px 0 10px;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 10px 0 12px;
       color: #fef2f2;
-      font-size: 13px;
+      font-size: 14px;
     }
     .lantern {
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(254, 226, 226, 0.7);
-      background: rgba(248, 250, 252, 0.1);
+      border: 1px solid rgba(254, 226, 226, 0.9);
+      background: rgba(248, 250, 252, 0.15);
     }
 
     .warning {
       margin: 0 auto 16px;
-      max-width: 640px;
-      font-size: 13px;
+      max-width: 680px;
+      font-size: 14px;
       color: #b91c1c;
       background: #fee2e2;
       border: 1px solid #fecaca;
-      padding: 6px 10px;
-      border-radius: 8px;
+      padding: 8px 12px;
+      border-radius: 10px;
     }
 
     .layout {
       display: grid;
-      gap: 16px;
+      gap: 18px;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
     }
-    @media (max-width: 800px) {
+    @media (max-width: 840px) {
       .layout { grid-template-columns: 1fr; }
     }
 
     .card {
       background: var(--panel);
-      border-radius: 14px;
+      border-radius: 16px;
       border: 1px solid var(--border);
-      padding: 16px 18px 18px;
-      box-shadow: 0 12px 30px rgba(127, 29, 29, 0.35);
+      padding: 18px 20px 20px;
+      box-shadow: 0 16px 34px rgba(127, 29, 29, 0.35);
     }
     .card h2 {
-      margin: 0 0 10px;
-      font-size: 20px;
+      margin: 0 0 12px;
+      font-size: 22px;
     }
 
-    .progress-shell {
-      margin-bottom: 10px;
-    }
+    .progress-shell { margin-bottom: 14px; }
     .progress-track {
       width: 100%;
-      height: 8px;
+      height: 10px;
       border-radius: 999px;
       background: #fee2e2;
       overflow: hidden;
@@ -111,66 +111,66 @@
 
     label {
       display: block;
-      margin: 12px 0 4px;
-      font-size: 15px;
+      margin: 14px 0 6px;
+      font-size: 17px;
     }
     select, input[type="number"], input[type="text"] {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #fecaca;
+      padding: 12px 13px;
+      border-radius: 12px;
+      border: 1px solid #fed7aa;
       background: #fff7f7;
       color: var(--text);
-      font-size: 15px;
+      font-size: 16px;
       transition: box-shadow 0.2s ease, transform 0.08s ease;
     }
     select:focus, input:focus {
       outline: none;
-      box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.6);
+      box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.7);
       transform: translateY(-1px);
     }
 
     .checkbox-group {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 6px 12px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 8px 14px;
       margin-top: 6px;
     }
     .checkbox-group label {
       margin: 0;
-      font-size: 14px;
+      font-size: 15px;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
     }
     .checkbox-group input { margin-right: 2px; }
 
     .hint {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--muted);
     }
 
     button {
-      margin-top: 16px;
+      margin-top: 20px;
       width: 100%;
-      padding: 11px 14px;
+      padding: 13px 16px;
       border-radius: 999px;
       border: none;
       background: linear-gradient(90deg, #f97316, #facc15);
       color: #450a0a;
-      font-weight: 700;
-      font-size: 16px;
+      font-weight: 800;
+      font-size: 17px;
       cursor: pointer;
-      box-shadow: 0 8px 18px rgba(248, 250, 252, 0.25);
+      box-shadow: 0 10px 22px rgba(248, 250, 252, 0.25);
       transition: transform 0.09s ease, box-shadow 0.09s ease;
     }
     button:hover {
       transform: translateY(-1px);
-      box-shadow: 0 12px 24px rgba(248, 250, 252, 0.35);
+      box-shadow: 0 14px 28px rgba(248, 250, 252, 0.35);
     }
     button:active {
       transform: translateY(0);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
     }
     button:disabled {
       opacity: .6;
@@ -178,25 +178,26 @@
     }
 
     .result-title {
-      font-size: 20px;
+      font-size: 22px;
       margin-bottom: 8px;
+      font-weight: 800;
     }
     .result-main {
-      font-size: 17px;
-      margin-bottom: 6px;
+      font-size: 18px;
+      margin-bottom: 8px;
     }
     .result-detail {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--muted);
       margin-bottom: 6px;
     }
     .result-banner {
-      margin-top: 10px;
-      padding: 9px 11px;
+      margin-top: 12px;
+      padding: 10px 12px;
       border-radius: 12px;
       background: var(--accent-soft);
       border: 1px solid rgba(248,113,113,.5);
-      font-size: 15px;
+      font-size: 16px;
     }
 
     .footer-note {
@@ -229,7 +230,7 @@
 
   <div class="warning">⚠️ 台灣法規：未滿 18 歲不得購買或兌領彩券（包括刮刮樂）。本問卷僅供滿 18 歲以上民眾分享經驗。</div>
 
-  <div class="layout">
+  <div class="layout" id="survey-section">
     <section class="card">
       <h2>填寫你的過年刮刮樂戰報</h2>
       <div class="progress-shell">
@@ -290,38 +291,38 @@
         <div class="step" data-step="4">
           <label for="spent">總共買了多少錢的刮刮樂？（元）</label>
           <input id="spent" name="spent" type="number" inputmode="decimal" min="0" step="1" required>
-          <div class="hint">請填入整數，例如 2000。</div>
+          <div class="hint">可以填 0，代表只是幫家人刮、自己沒花錢。</div>
           <button type="button" data-next>下一題</button>
         </div>
 
         <!-- Step 5: Won -->
         <div class="step" data-step="5">
-          <label for="won">最後贏了多少錢？（可填負值，負代表賠錢）</label>
+          <label for="won">最後贏了多少錢？（可填 0 或負值，負代表賠錢）</label>
           <input id="won" name="won" type="number" inputmode="decimal" step="1" required>
-          <div class="hint">例如：贏 5000 就填 5000；整體小賠 800 就填 -800。</div>
+          <div class="hint">例如：贏 5000 就填 5000；整體小賠 800 就填 -800；完全沒輸沒贏就填 0。</div>
 
-          <button type="submit">送出戰報，看看我是財神還是贊助商</button>
+          <button type="submit">送出戰報</button>
         </div>
       </form>
-      <div class="footer-note">＊資料會匿名寫入 Google Sheets 做統計使用，不會收集聯絡方式。</div>
+      <div class="footer-note">資料僅用於統計與產生群體戰績，沒有收集聯絡方式。</div>
     </section>
 
     <section class="card" id="result-card">
-      <div class="result-title">等你送出表單，我幫你算命。</div>
-      <div class="result-detail">會顯示：你這次過年刮刮樂的投報率、賺賠金額，還有大約贏過多少比例的使用者。</div>
-      <div class="result-banner">目前比較是「先做出體驗」，實際與其他人的比較之後可以接 Google Sheets 統計再調整。</div>
+      <div class="result-title">等你送出表單，我幫你看這次有沒有「馬上發」。</div>
+      <div class="result-detail">完成後會顯示：這次過年刮刮樂的投報率、賺賠金額，以及大約贏過多少比例的其他人。</div>
+      <div class="result-banner">填完不用 1 分鐘，就能知道你在親友之間算是偏「財神」還是偏「贊助商」。</div>
     </section>
   </div>
 </div>
 
 <script>
-  // TODO: 換成你自己的 Google Apps Script / API endpoint
   const SHEET_ENDPOINT = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
   const form = document.getElementById("survey-form");
   const resultCard = document.getElementById("result-card");
   const progressBar = document.getElementById("progress-bar");
   const steps = Array.from(document.querySelectorAll(".step"));
+  const surveySection = document.getElementById("survey-section");
 
   const TITLES = [
     "馬年高倍財神",
@@ -351,6 +352,14 @@
           return;
         }
       }
+      // 特別檢查第 3 題至少勾一個類型
+      if (step.dataset.step === "3") {
+        const checked = step.querySelectorAll('input[name="types"]:checked');
+        if (!checked.length) {
+          alert("至少勾選一種刮刮樂，才好幫你算戰績！");
+          return;
+        }
+      }
       showStep(idx + 2);
     });
   });
@@ -368,7 +377,6 @@
     const net = won - spent;
     const roi = spent > 0 ? (net / spent) * 100 : 0;
 
-    // 粗略模擬一個「贏過多少人」的百分位（之後可以改用真正統計）
     let percentile;
     if (spent === 0) {
       percentile = 50;
@@ -399,11 +407,13 @@
       banner = "小賠還在安全範圍內，明年可以先設定好預算，上限到了就收手。";
     }
 
+    // 問卷結果畫面：只保留結果，不再顯示題目
+    surveySection.style.display = "none";
     resultCard.innerHTML = `
       <div class="result-title">${title}</div>
+      <div class="result-main">本次系統頒給你的馬年稱號是：<strong>${randomTitle}</strong></div>
       <div class="result-main">${main}</div>
-      <div class="result-detail">本次系統頒給你的馬年稱號：<strong>${randomTitle}</strong></div>
-      <div class="result-detail">你填寫的背景：${age}、在 ${city} 過年${types ? `，有買：${types}` : ""}。</div>
+      <div class="result-detail">背景資料：${age}、在 ${city} 過年${types ? `，有買：${types}` : ""}。</div>
       <div class="result-detail">${compare}</div>
       <div class="result-banner">${banner}</div>
     `;
@@ -430,12 +440,8 @@
     } catch (err) {
       console.warn("寫入 Google Sheets 失敗（先不影響體驗）", err);
     }
-
-    // 送出後直接把進度條補到 100%
-    progressBar.style.width = "100%";
   });
 
-  // 初始設定
   showStep(1);
 </script>
 </body>
