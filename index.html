@@ -34,52 +34,61 @@
       padding: 20px 16px 40px;
       position: relative;
     }
-    .decor-coin {
-      position: absolute;
-      width: 80px;
+
+    /* hero 裝飾 */
+    .hero-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .hero-text {
+      text-align: left;
+      color: #fef2f2;
+    }
+    .hero-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin: 0 0 4px;
+    }
+    .hero-sub {
+      font-size: 14px;
+      opacity: .9;
+    }
+    .hero-visual {
+      position: relative;
+      width: 110px;
       height: 80px;
+    }
+    .hero-card {
+      position: absolute;
+      inset: 8px 0 0 10px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f97316, #facc15);
+      box-shadow: 0 10px 20px rgba(0,0,0,.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+    .hero-chip {
+      position: absolute;
+      bottom: -6px;
+      right: 0;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #fef9c3, #facc15, #b45309);
-      opacity: 0.26;
-      filter: blur(1px);
-      z-index: -1;
-    }
-    .decor-coin.coin-left { top: 40px; left: -10px; }
-    .decor-coin.coin-right { top: 140px; right: -20px; }
-
-    header {
-      text-align: center;
-      margin-bottom: 16px;
-      color: #fef2f2;
-      position: relative;
-    }
-    h1 {
-      margin: 0 0 6px;
-      font-size: 30px;
-    }
-    .subtitle {
-      font-size: 16px;
-      opacity: 0.95;
-    }
-
-    .lantern-row {
       display: flex;
+      align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 10px 0 12px;
-      color: #fef2f2;
-      font-size: 14px;
-    }
-    .lantern {
-      padding: 4px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(254, 226, 226, 0.9);
-      background: rgba(248, 250, 252, 0.15);
+      font-size: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,.35);
     }
 
     .warning {
-      margin: 0 auto 16px;
+      margin: 8px auto 16px;
       max-width: 680px;
       font-size: 14px;
       color: #b91c1c;
@@ -209,6 +218,7 @@
       border-color: #f97316;
       box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.6);
       background: #fff1e6;
+      transform: translateY(-2px) scale(1.01);
     }
     .game-icon {
       width: 42px;
@@ -315,6 +325,16 @@
       font-size: 16px;
     }
 
+    .type-pill {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(252, 211, 77, .3);
+      color: #92400e;
+      font-size: 13px;
+    }
+
     .result-actions {
       margin-top: 16px;
       display: flex;
@@ -346,16 +366,16 @@
   <div class="decor-coin coin-left"></div>
   <div class="decor-coin coin-right"></div>
 
-  <header>
-    <h1>🧧🐴 過年刮刮樂戰績調查</h1>
-    <div class="subtitle">馬年財運大點名：看看您是財神、贊助商，還是傳說中的「回本仔」？</div>
-    <div class="lantern-row">
-      <div class="lantern">福</div>
-      <div class="lantern">馬年行大運</div>
-      <div class="lantern">刮出好手氣</div>
-      <div class="lantern">恭喜發財</div>
+  <div class="hero-strip">
+    <div class="hero-text">
+      <div class="hero-title">🧧 馬年刮刮樂戰績大調查</div>
+      <div class="hero-sub">填完 1 分鐘，看看您是財神、贊助商，還是穩健回本仔。</div>
     </div>
-  </header>
+    <div class="hero-visual">
+      <div class="hero-card">刮</div>
+      <div class="hero-chip">💰</div>
+    </div>
+  </div>
 
   <div class="warning">⚠️ 台灣法規：未滿 18 歲不得購買或兌領彩券（包括刮刮樂）。本問卷僅供滿 18 歲以上民眾分享經驗。</div>
 
@@ -585,6 +605,17 @@
     "刮到手酸但還笑得出來型"
   ];
 
+  const TYPE_RULES = [
+    { key: 'A', name: '高倍彩神型', good: '適合偶爾重押一波、但能理性停手的人。', bad: '不適合心情容易被輸贏影響、或一輸就想加碼的人。' },
+    { key: 'B', name: '穩健回本型', good: '適合有預算上限、願意把刮刮樂當作娛樂費的人。', bad: '不適合期待「靠一次刮出財富自由」的人。' },
+    { key: 'C', name: '小賠享樂型', good: '適合把刮刮樂當成過年聚會氣氛的催化劑。', bad: '不適合對金錢壓力很敏感、看到小賠就睡不著的人。' },
+    { key: 'D', name: '豪爽贊助商型', good: '適合收入穩定、把這筆錢當作年度娛樂預算的人。', bad: '不適合本來就資金吃緊、要靠這筆錢過生活的人。' },
+    { key: 'E', name: '零損平手型', good: '適合喜歡「有參與感但不想太心累」的玩家。', bad: '不適合追求極限刺激、想要翻倍或全押的人。' },
+    { key: 'F', name: '觀戰分析型', good: '適合愛看機率、統計，跟朋友一起討論玩法的人。', bad: '不適合完全不在乎規則，只想隨便亂買的人。' },
+    { key: 'G', name: '家族同樂型', good: '適合全家一起小額分散，當作過年活動一環。', bad: '不適合單槍匹馬硬拚高面額、壓力太大的人。' },
+    { key: 'H', name: '理財冷靜型', good: '適合理性又自律、願意把大部分資金留在投資的人。', bad: '不適合喜歡「靠運氣翻本」、容易被旁人拱上頭的人。' }
+  ];
+
   function showStep(n) {
     steps.forEach((step, idx) => {
       step.classList.toggle("active", idx === n - 1);
@@ -655,6 +686,20 @@
     return isNaN(num) ? 0 : num;
   }
 
+  function classifyType(spent, net, typesStr) {
+    const roi = spent > 0 ? (net / spent) * 100 : 0;
+    const hasHighRoller = /1200萬大吉利|2000萬超級紅包/.test(typesStr || "");
+
+    if (net > 0 && roi >= 50) return TYPE_RULES[0];            // 高倍彩神型
+    if (roi >= 0 && roi < 50) return TYPE_RULES[1];            // 穩健回本型
+    if (roi < 0 && roi > -30) return TYPE_RULES[2];            // 小賠享樂型
+    if (roi <= -60 || hasHighRoller) return TYPE_RULES[3];     // 豪爽贊助商型
+    if (net === 0) return TYPE_RULES[4];                        // 零損平手型
+    if (spent === 0 && net === 0) return TYPE_RULES[5];         // 觀戰分析型
+    if (spent > 0 && /馬年行大運|財神報到|財源滾滾/.test(typesStr || "")) return TYPE_RULES[6]; // 家族同樂型
+    return TYPE_RULES[7];                                       // 理財冷靜型
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -685,6 +730,7 @@
     }
 
     const randomTitle = TITLES[Math.floor(Math.random() * TITLES.length)];
+    const typeInfo = classifyType(spent, net, types);
 
     const main = `這次您總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
     const compare = `依照目前的模擬分佈，您大約贏過約 ${percentile}% 的參與者。`;
@@ -700,8 +746,6 @@
       banner = "小賠還在安全範圍內，明年可以先設定好預算，上限到了就收手。";
     }
 
-    const title = net >= 0 ? "恭喜，您是這波的財神之一！" : "辛苦了，您正式成為台彩無名股東。";
-
     if (formCard) formCard.style.display = "none";
     resultCard.style.display = "block";
     resultCard.innerHTML = `
@@ -710,6 +754,9 @@
       <div class="confetti-row">🎊 🎉 🧧</div>
       <div class="result-main">${main}</div>
       <div class="result-detail">${compare}</div>
+      <div class="result-detail"><span class="type-pill">您的類型：${typeInfo.name}</span></div>
+      <div class="result-detail">適合您的狀況：${typeInfo.good}</div>
+      <div class="result-detail">不太適合的情境：${typeInfo.bad}</div>
       <div class="result-banner">${banner}</div>
       <div class="result-actions">
         <button type="button" onclick="downloadResultImage()">下載成果</button>
