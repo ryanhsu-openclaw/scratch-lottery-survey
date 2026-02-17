@@ -583,7 +583,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
-  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbzLaapUm4zNeXnGJZmb3LGf3qcV688_KXqDJTtrNQojk7zub6vpxhxVJk1yFQMmx9zhTQ/exec";
+  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwlG_o5n-TsPoS7_l89ngOjEVBa5YkwoCgz2vwwDhNv45kxAy2f_URXvLurOSRpSIss7A/exec";
 
   const form = document.getElementById("survey-form");
   const resultCard = document.getElementById("result-card");
@@ -592,7 +592,6 @@
   const formCard = document.getElementById("form-card");
   const gameGrid = document.getElementById("game-grid");
 
-  // 單一來源的類型 + 稱號 + 對應圖片
   const TYPE_RULES = [
     { key: 'A', name: '高倍數梭哈財神',        clashKey: 'H', image: 'img/Type-A.PNG' },
     { key: 'B', name: '穩健回本心靈股東',      clashKey: 'D', image: 'img/Type-B.PNG' },
@@ -741,7 +740,7 @@
     const clashType = TYPE_RULES.find(t => t.key === typeInfo.clashKey) || TYPE_RULES[0];
 
     const main = `這次您總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
-    const compare = `在本測驗的模擬分佈中，您大約落在前 ${percentile}% 的區間（僅供參考）。`;
+    const compare = `在目前累積的參與者中，您大約落在前 ${percentile}% 的區間（僅供參考）。`;
 
     let banner;
     if (net > 0) {
