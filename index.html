@@ -191,11 +191,6 @@
       font-size: 15px;
       font-weight: 600;
     }
-    .game-text-meta {
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .game-card input[type="checkbox"] { display: none; }
 
     .hint {
       font-size: 14px;
@@ -262,6 +257,30 @@
       background: var(--accent-soft);
       border: 1px solid rgba(248,113,113,.5);
       font-size: 16px;
+    }
+
+    .badge-title {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fef3c7;
+      background: linear-gradient(90deg, #b91c1c, #f97316);
+      margin-bottom: 10px;
+    }
+    .result-tag {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #facc15, #fb923c);
+      color: #451a03;
+      font-weight: 800;
+    }
+    .confetti-row {
+      margin-top: 8px;
+      font-size: 20px;
     }
 
     .result-actions {
@@ -353,38 +372,34 @@
         <div class="step" data-step="3">
           <label>您今年都買了哪些刮刮樂？（可複選）</label>
           <div class="game-grid" id="game-grid">
-            <!-- 依照表格，金額由小到大排序 -->
+            <!-- 依照表格，金額由小到大排序，短評已移除 -->
             <!-- $100 -->
             <label class="game-card" data-value="馬年行大運（$100）">
               <input type="checkbox" name="types" value="馬年行大運（$100）">
               <div class="game-icon">🐴</div>
               <div>
-                <div class="game-text-title">馬年行大運</div>
-                <div class="game-text-meta">$100 · 馬年限定款，當小禮物很有年味</div>
+                <div class="game-text-title">馬年行大運 · $100</div>
               </div>
             </label>
             <label class="game-card" data-value="推金幣（$100）">
               <input type="checkbox" name="types" value="推金幣（$100）">
               <div class="game-icon">🪙</div>
               <div>
-                <div class="game-text-title">推金幣</div>
-                <div class="game-text-meta">$100 · 金幣主題，畫面滿滿金色元素</div>
+                <div class="game-text-title">推金幣 · $100</div>
               </div>
             </label>
             <label class="game-card" data-value="財神報到（$100）">
               <input type="checkbox" name="types" value="財神報到（$100）">
               <div class="game-icon">🧨</div>
               <div>
-                <div class="game-text-title">財神報到</div>
-                <div class="game-text-meta">$100 · 招財感強，拿來討個吉利</div>
+                <div class="game-text-title">財神報到 · $100</div>
               </div>
             </label>
             <label class="game-card" data-value="財源滾滾（$100）">
               <input type="checkbox" name="types" value="財源滾滾（$100）">
               <div class="game-icon">📈</div>
               <div>
-                <div class="game-text-title">財源滾滾</div>
-                <div class="game-text-meta">$100 · 入手門檻低，適合路過小試手氣</div>
+                <div class="game-text-title">財源滾滾 · $100</div>
               </div>
             </label>
 
@@ -393,32 +408,28 @@
               <input type="checkbox" name="types" value="大三元（$200）">
               <div class="game-icon">🀄</div>
               <div>
-                <div class="game-text-title">大三元</div>
-                <div class="game-text-meta">$200 · 經典款式，過年桌遊氛圍濃厚</div>
+                <div class="game-text-title">大三元 · $200</div>
               </div>
             </label>
             <label class="game-card" data-value="金好鑽（$200）">
               <input type="checkbox" name="types" value="金好鑽（$200）">
               <div class="game-icon">💎</div>
               <div>
-                <div class="game-text-title">金好鑽</div>
-                <div class="game-text-meta">$200 · 鑽石主題，適合喜歡亮晶晶風格</div>
+                <div class="game-text-title">金好鑽 · $200</div>
               </div>
             </label>
             <label class="game-card" data-value="獎金樂翻倍（$200）">
               <input type="checkbox" name="types" value="獎金樂翻倍（$200）">
               <div class="game-icon">🔁</div>
               <div>
-                <div class="game-text-title">獎金樂翻倍</div>
-                <div class="game-text-meta">$200 · 有翻倍機制，適合喜歡小驚喜</div>
+                <div class="game-text-title">獎金樂翻倍 · $200</div>
               </div>
             </label>
             <label class="game-card" data-value="獎金嘉年華（$200）">
               <input type="checkbox" name="types" value="獎金嘉年華（$200）">
               <div class="game-icon">🎪</div>
               <div>
-                <div class="game-text-title">獎金嘉年華</div>
-                <div class="game-text-meta">$200 · 名稱喜氣，適合大家一起邊刮邊聊</div>
+                <div class="game-text-title">獎金嘉年華 · $200</div>
               </div>
             </label>
 
@@ -427,16 +438,14 @@
               <input type="checkbox" name="types" value="海底大尋寶（$300）">
               <div class="game-icon">🐟</div>
               <div>
-                <div class="game-text-title">海底大尋寶</div>
-                <div class="game-text-meta">$300 · 版面豐富，適合喜歡多格遊戲的玩家</div>
+                <div class="game-text-title">海底大尋寶 · $300</div>
               </div>
             </label>
             <label class="game-card" data-value="好運連發（$300）">
               <input type="checkbox" name="types" value="好運連發（$300）">
               <div class="game-icon">🎉</div>
               <div>
-                <div class="game-text-title">好運連發</div>
-                <div class="game-text-meta">$300 · 連線感強，視覺效果偏熱鬧</div>
+                <div class="game-text-title">好運連發 · $300</div>
               </div>
             </label>
 
@@ -445,24 +454,21 @@
               <input type="checkbox" name="types" value="哈啾咪（$500）">
               <div class="game-icon">😺</div>
               <div>
-                <div class="game-text-title">哈啾咪</div>
-                <div class="game-text-meta">$500 · 畫風活潑，適合喜歡可愛風格的玩家</div>
+                <div class="game-text-title">哈啾咪 · $500</div>
               </div>
             </label>
             <label class="game-card" data-value="五路財神（$500）">
               <input type="checkbox" name="types" value="五路財神（$500）">
               <div class="game-icon">🧧</div>
               <div>
-                <div class="game-text-title">五路財神</div>
-                <div class="game-text-meta">$500 · 傳統財神路線，年節儀式感滿滿</div>
+                <div class="game-text-title">五路財神 · $500</div>
               </div>
             </label>
             <label class="game-card" data-value="金馬獎（$500）">
               <input type="checkbox" name="types" value="金馬獎（$500）">
               <div class="game-icon">🏆</div>
               <div>
-                <div class="game-text-title">金馬獎</div>
-                <div class="game-text-meta">$500 · 100% 中獎，偏向「買體驗」型玩法</div>
+                <div class="game-text-title">金馬獎 · $500</div>
               </div>
             </label>
 
@@ -471,8 +477,7 @@
               <input type="checkbox" name="types" value="1200萬大吉利（$1,000）">
               <div class="game-icon">💰</div>
               <div>
-                <div class="game-text-title">1200萬大吉利</div>
-                <div class="game-text-meta">$1,000 · 中獎率高、節奏偏快的高面額款</div>
+                <div class="game-text-title">1200萬大吉利 · $1,000</div>
               </div>
             </label>
 
@@ -481,8 +486,7 @@
               <input type="checkbox" name="types" value="2000萬超級紅包（$2,000）">
               <div class="game-icon">🧧</div>
               <div>
-                <div class="game-text-title">2000萬超級紅包</div>
-                <div class="game-text-meta">$2,000 · 高單價大獎型，適合揪團一起拚手氣</div>
+                <div class="game-text-title">2000萬超級紅包 · $2,000</div>
               </div>
             </label>
           </div>
@@ -687,10 +691,10 @@
     if (formCard) formCard.style.display = "none";
     resultCard.style.display = "block";
     resultCard.innerHTML = `
-      <div class="result-title">${title}</div>
-      <div class="result-main">本次系統頒給您的馬年稱號是：<strong>${randomTitle}</strong></div>
+      <div class="badge-title">馬年刮刮樂戰績</div>
+      <div class="result-main">您的稱號是：<span class="result-tag">${randomTitle}</span></div>
+      <div class="confetti-row">🎊 🎉 🧧</div>
       <div class="result-main">${main}</div>
-      <div class="result-detail">背景資料：${age}、在 ${city} 過年${types ? `，有買：${types}` : ""}。</div>
       <div class="result-detail">${compare}</div>
       <div class="result-banner">${banner}</div>
       <div class="result-actions">
