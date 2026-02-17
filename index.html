@@ -669,11 +669,38 @@
   async function downloadResultImage() {
     const card = resultCard;
     if (!card) return;
-    const canvas = await html2canvas(card, {backgroundColor: "#fff"});
-    const link = document.createElement("a");
-    link.download = "scratch-lottery-result.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+
+    // 給瀏覽器一點時間完成排版，避免畫面還沒 render 完就截圖
+    await new Promise(r => setTimeout(r, 150));
+
+    const canvas = await html2canvas(card, {
+      backgroundColor: "#ffffff",
+      scale: window.devicePixelRatio || 2,
+      useCORS: true
+    });
+    const dataUrl = canvas.toDataURL("image/png");
+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (isIOS) {
+      // iOS 不支援 a.download，改成新開圖片，讓使用者長按存到相簿
+      const win = window.open();
+      if (win) {
+        win.document.write('<html><head><title>刮刮樂戰績截圖</title></head><body style="margin:0;background:#000;display:flex;align-items:center;justify-content:center;">');
+        win.document.write('<img src="' + dataUrl + '" style="max-width:100%;height:auto;" />');
+        win.document.write('</body></html>');
+        win.document.close();
+      } else {
+        alert("請允許開啟新分頁來儲存截圖");
+      }
+    } else {
+      const link = document.createElement("a");
+      link.download = "scratch-lottery-result.png";
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   }
 
   function playAgain() {
