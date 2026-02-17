@@ -242,7 +242,7 @@
     .nav-buttons button { flex: 1; }
     .nav-buttons .back {
       background: #fee2e2;
-      color: var(--muted);
+      color: #9f1239;
       box-shadow: none;
     }
 
@@ -273,29 +273,6 @@
       cursor: wait;
     }
 
-    .result-title {
-      font-size: 22px;
-      margin-bottom: 8px;
-      font-weight: 800;
-    }
-    .result-main {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .result-detail {
-      font-size: 15px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    .result-banner {
-      margin-top: 12px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: var(--accent-soft);
-      border: 1px solid rgba(248,113,113,.5);
-      font-size: 16px;
-    }
-
     .badge-title {
       display: inline-block;
       padding: 4px 12px;
@@ -318,6 +295,24 @@
     .confetti-row {
       margin-top: 8px;
       font-size: 20px;
+    }
+
+    .result-main {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .result-detail {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .result-banner {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(248,113,113,.5);
+      font-size: 16px;
     }
 
     .result-actions {
@@ -412,7 +407,6 @@
         <div class="step" data-step="3">
           <label>您今年都買了哪些刮刮樂？（可複選）</label>
           <div class="game-grid" id="game-grid">
-            <!-- 依照表格，金額由小到大排序，短評已移除 -->
             <!-- $100 -->
             <label class="game-card" data-value="馬年行大運（$100）">
               <input type="checkbox" name="types" value="馬年行大運（$100）">
@@ -574,7 +568,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
-  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyHZIQ5G_Cr4cmCQCWq7xZmzrCwafeXU63Mu6Mn11feuTrbxJyVUtZN7FCh3nRIuCNVXg/exec";
+  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbw6f6T8ZgrZZln5k-2TAWBd5IJfBK-1dsAMpOwcIUVs8vXE1XqN80Stwgq88Iw96LSokg/exec";
 
   const form = document.getElementById("survey-form");
   const resultCard = document.getElementById("result-card");
@@ -599,7 +593,6 @@
     progressBar.style.width = `${percent}%`;
   }
 
-  // 刮刮樂卡片點擊效果
   if (gameGrid) {
     gameGrid.addEventListener("click", (e) => {
       const card = e.target.closest(".game-card");
@@ -610,7 +603,6 @@
     });
   }
 
-  // 按「下一題」切換步驟與上一題返回
   steps.forEach((step, idx) => {
     const nextBtn = step.querySelector("[data-next]");
     const prevBtn = step.querySelector("[data-prev]");
@@ -653,7 +645,6 @@
   }
 
   function playAgain() {
-    // 重新載入頁面，回到第一題
     window.location.href = window.location.pathname + window.location.search;
   }
 
@@ -695,7 +686,6 @@
 
     const randomTitle = TITLES[Math.floor(Math.random() * TITLES.length)];
 
-    const title = net >= 0 ? "恭喜，您是這波的財神之一！" : "辛苦了，您正式成為台彩無名股東。";
     const main = `這次您總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
     const compare = `依照目前的模擬分佈，您大約贏過約 ${percentile}% 的參與者。`;
 
@@ -710,9 +700,8 @@
       banner = "小賠還在安全範圍內，明年可以先設定好預算，上限到了就收手。";
     }
 
-    const shareText = `我的馬年刮刮樂稱號是「${randomTitle}」，${main}，${compare}`;
+    const title = net >= 0 ? "恭喜，您是這波的財神之一！" : "辛苦了，您正式成為台彩無名股東。";
 
-    // 問卷結果畫面：只保留結果，不再顯示題目（右側結果卡片仍保留）
     if (formCard) formCard.style.display = "none";
     resultCard.style.display = "block";
     resultCard.innerHTML = `
