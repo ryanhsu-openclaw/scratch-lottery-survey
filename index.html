@@ -592,24 +592,16 @@
   const formCard = document.getElementById("form-card");
   const gameGrid = document.getElementById("game-grid");
 
-  const TITLES = [
-    "馬年高倍財神",
-    "穩健回本仔",
-    "熱血贊助商",
-    "冷靜理財馬",
-    "刮到手酸但還笑得出來型"
-  ];
-
-  // 8 種幽默類型稱號 + 對應「不合」的反差稱號
+  // 單一來源的類型 + 稱號 + 對應圖片
   const TYPE_RULES = [
-    { key: 'A', name: '高倍數梭哈財神', clash: '小心翼翼理財馬', image: 'img/Type-A.PNG' },
-    { key: 'B', name: '穩健回本心靈股東', clash: '台彩年度 VIP 贊助商', image: 'img/Type-B.PNG' },
-    { key: 'C', name: '小賠當買氣氛型', clash: '高倍數梭哈財神', image: 'img/Type-C.PNG' },
-    { key: 'D', name: '台彩年度 VIP 贊助商', clash: '小心翼翼理財馬', image: 'img/Type-D.PNG' },
-    { key: 'E', name: '佛系零損平手王', clash: '高倍數梭哈財神', image: 'img/Type-E.PNG' },
-    { key: 'F', name: '邊刮邊當資料科學家', clash: '隨便亂買跟風王', image: 'img/Type-F.PNG' },
-    { key: 'G', name: '全家歡樂揪團長', clash: '一人默默高面額戰士', image: 'img/Type-G.PNG' },
-    { key: 'H', name: '小心翼翼理財馬', clash: '台彩年度 VIP 贊助商', image: 'img/Type-H.PNG' }
+    { key: 'A', name: '高倍數梭哈財神',        clashKey: 'H', image: 'img/Type-A.PNG' },
+    { key: 'B', name: '穩健回本心靈股東',      clashKey: 'D', image: 'img/Type-B.PNG' },
+    { key: 'C', name: '小賠當買氣氛型',        clashKey: 'A', image: 'img/Type-C.PNG' },
+    { key: 'D', name: '台彩年度 VIP 贊助商',  clashKey: 'H', image: 'img/Type-D.PNG' },
+    { key: 'E', name: '佛系零損平手王',        clashKey: 'A', image: 'img/Type-E.PNG' },
+    { key: 'F', name: '邊刮邊當資料科學家',    clashKey: 'D', image: 'img/Type-F.PNG' },
+    { key: 'G', name: '全家歡樂揪團長',        clashKey: 'D', image: 'img/Type-G.PNG' },
+    { key: 'H', name: '小心翼翼理財馬',        clashKey: 'D', image: 'img/Type-H.PNG' }
   ];
 
   function showStep(n) {
@@ -696,6 +688,21 @@
     return TYPE_RULES[7];                                       // 小心翼翼理財馬
   }
 
+  async function getPercentileFromSheet(roi) {
+    try {
+      const res = await fetch(`${SHEET_ENDPOINT}?action=percentile&roi=${encodeURIComponent(roi)}`);
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (typeof data.percentile === 'number' && !isNaN(data.percentile)) {
+        return data.percentile;
+      }
+      return null;
+    } catch (e) {
+      console.warn('percentile fetch failed', e);
+      return null;
+    }
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -712,24 +719,29 @@
     const net = won - spent;
     const roi = spent > 0 ? (net / spent) * 100 : 0;
 
-    let percentile;
-    if (spent === 0) {
-      percentile = 50;
-    } else if (roi >= 50) {
-      percentile = 95;
-    } else if (roi >= 0) {
-      percentile = 75;
-    } else if (roi > -50) {
-      percentile = 45;
-    } else {
-      percentile = 25;
+    // 先嘗試從 Google Sheets 拿真實分布百分位
+    let percentile = await getPercentileFromSheet(roi);
+
+    // 若無法取得，退回原本模擬規則
+    if (percentile === null) {
+      if (spent === 0) {
+        percentile = 50;
+      } else if (roi >= 50) {
+        percentile = 95;
+      } else if (roi >= 0) {
+        percentile = 75;
+      } else if (roi > -50) {
+        percentile = 45;
+      } else {
+        percentile = 25;
+      }
     }
 
-    const randomTitle = TITLES[Math.floor(Math.random() * TITLES.length)];
     const typeInfo = classifyType(spent, net, types);
+    const clashType = TYPE_RULES.find(t => t.key === typeInfo.clashKey) || TYPE_RULES[0];
 
     const main = `這次您總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
-    const compare = `依照目前的模擬分佈，您大約贏過約 ${percentile}% 的參與者。`;
+    const compare = `在本測驗的模擬分佈中，您大約落在前 ${percentile}% 的區間（僅供參考）。`;
 
     let banner;
     if (net > 0) {
@@ -746,7 +758,7 @@
     resultCard.style.display = "block";
     resultCard.innerHTML = `
       <div class="badge-title">馬年刮刮樂戰績</div>
-      <div class="result-main">您的稱號是：<span class="result-tag">${randomTitle}</span></div>
+      <div class="result-main">您的稱號是：<span class="result-tag">${typeInfo.name}</span></div>
       <div class="confetti-row">🎊 🎉 🧧</div>
       <div class="result-main">${main}</div>
       <div class="result-detail">${compare}</div>
@@ -756,7 +768,7 @@
       <div class="type-section-title">合適的類型</div>
       <div class="result-detail"><span class="type-label-big">${typeInfo.name}</span></div>
       <div class="type-section-title">容易吵架的類型</div>
-      <div class="result-detail"><span class="type-label-big">${typeInfo.clash}</span></div>
+      <div class="result-detail"><span class="type-label-big">${clashType.name}</span></div>
       <div class="result-banner">${banner}</div>
       <div class="result-actions">
         <button type="button" onclick="downloadResultImage()">下載成果</button>
@@ -773,7 +785,7 @@
       won,
       net,
       roi,
-      nickname: randomTitle,
+      nickname: typeInfo.name,
     };
 
     try {
