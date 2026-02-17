@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <title>過年刮刮樂戰績調查 · 新年財運儀表板</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #020617;
+      --border: #1e293b;
+      --accent: #f97316;
+      --accent-soft: rgba(248,113,113,.15);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 16px 14px 40px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 24px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .layout {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+    }
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 14px 16px 16px;
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 4px;
+      font-size: 14px;
+    }
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #020617;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 4px 12px;
+      margin-top: 4px;
+    }
+    .checkbox-group label {
+      margin: 0;
+      font-size: 13px;
+    }
+    .checkbox-group input {
+      margin-right: 4px;
+    }
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    button {
+      margin-top: 14px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(90deg, #f97316, #facc15);
+      color: #111827;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .result-title {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .result-main {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .result-detail {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .result-banner {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(248,113,113,.4);
+      font-size: 14px;
+    }
+
+    .footer-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🐯 過年刮刮樂戰績調查</h1>
+    <div class="subtitle">說實話：你是「賀歲財神」，還是默默扛起台彩營收的一份子？</div>
+  </header>
+
+  <div class="layout">
+    <section class="card">
+      <h2>填寫你的過年刮刮樂戰報</h2>
+      <form id="survey-form">
+        <label for="age">你幾歲？</label>
+        <select id="age" name="age" required>
+          <option value="" disabled selected>請選擇年齡區間</option>
+          <option>未滿 18 歲（小賭怡情，更要節制）</option>
+          <option>18–24 歲</option>
+          <option>25–34 歲</option>
+          <option>35–44 歲</option>
+          <option>45–54 歲</option>
+          <option>55–64 歲</option>
+          <option>65 歲以上</option>
+        </select>
+
+        <label for="city">在哪裡過年？</label>
+        <select id="city" name="city" required>
+          <option value="" disabled selected>請選擇縣市</option>
+          <option>台北市</option><option>新北市</option><option>基隆市</option>
+          <option>桃園市</option><option>新竹市</option><option>新竹縣</option>
+          <option>苗栗縣</option><option>台中市</option><option>彰化縣</option>
+          <option>南投縣</option><option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
+          <option>台南市</option><option>高雄市</option><option>屏東縣</option>
+          <option>宜蘭縣</option><option>花蓮縣</option><option>台東縣</option>
+          <option>澎湖縣</option><option>金門縣</option><option>連江縣</option>
+        </select>
+
+        <label>你今年都買了哪些刮刮樂？（可複選）</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="types" value="100 元小試手氣">100 元小試手氣</label>
+          <label><input type="checkbox" name="types" value="200 元經典款">200 元經典款</label>
+          <label><input type="checkbox" name="types" value="500 元大紅包">500 元大紅包</label>
+          <label><input type="checkbox" name="types" value="1000 元超級紅包">1000 元超級紅包</label>
+          <label><input type="checkbox" name="types" value="3000 元頂級豪華">3000 元頂級豪華</label>
+          <label><input type="checkbox" name="types" value="其他">其他 / 想不出名字的神秘款</label>
+        </div>
+        <div class="hint">（類型之後可以再依台彩官方品項微調）</div>
+
+        <label for="spent">總共買了多少錢的刮刮樂？（元）</label>
+        <input id="spent" name="spent" type="number" inputmode="decimal" min="0" step="1" required>
+        <div class="hint">請填入整數，例如 2000。</div>
+
+        <label for="won">最後贏了多少錢？（可填負值，負代表賠錢）</label>
+        <input id="won" name="won" type="number" inputmode="decimal" step="1" required>
+        <div class="hint">例如：贏 5000 就填 5000；整體小賠 800 就填 -800。</div>
+
+        <label for="nickname">給自己取一個刮刮樂稱號（可選填）</label>
+        <input id="nickname" name="nickname" type="text" placeholder="例如：中獎只會回本仔、刮到手軟卻沒中…">
+
+        <button type="submit">送出戰報，看看我是財神還是贊助商</button>
+      </form>
+      <div class="footer-note">＊資料會匿名寫入 Google Sheets 做統計使用，不會收集聯絡方式。</div>
+    </section>
+
+    <section class="card" id="result-card">
+      <div class="result-title">等你送出表單，我幫你算命。</div>
+      <div class="result-detail">會顯示：你這次過年刮刮樂的投報率、賺賠金額，還有大約贏過多少比例的使用者。</div>
+      <div class="result-banner">目前比較是「先做出體驗」，實際與其他人的比較之後可以接 Google Sheets 統計再調整。</div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // TODO: 換成你自己的 Google Apps Script / API endpoint
+  const SHEET_ENDPOINT = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
+  const form = document.getElementById("survey-form");
+  const resultCard = document.getElementById("result-card");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const age = formData.get("age");
+    const city = formData.get("city");
+    const types = formData.getAll("types").join(", ");
+    const spent = Number(formData.get("spent") || 0);
+    const won = Number(formData.get("won") || 0);
+    const nickname = formData.get("nickname")?.trim();
+
+    const net = won - spent;
+    const roi = spent > 0 ? (net / spent) * 100 : 0;
+
+    // 粗略模擬一個「贏過多少人」的百分位（之後可以改用真正統計）
+    let percentile;
+    if (spent === 0) {
+      percentile = 50;
+    } else if (roi >= 50) {
+      percentile = 95;
+    } else if (roi >= 0) {
+      percentile = 75;
+    } else if (roi > -50) {
+      percentile = 45;
+    } else {
+      percentile = 25;
+    }
+
+    const title = net >= 0 ? "恭喜，你是這波的財神之一！" : "辛苦了，你正式成為台彩無名股東。";
+    const main = `這次你總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
+    const compare = `依照目前的模擬分佈，你大約贏過約 ${percentile}% 的參與者。`; 
+
+    let banner;
+    if (net > 0) {
+      banner = "今年財神有眷顧你，但還是記得：不要拿生活費跟刮刮樂硬碰硬。";
+    } else if (net === 0) {
+      banner = "平手過年，等於買了一整套全家娛樂，還行。";
+    } else if (roi < -50) {
+      banner = "你是台彩 Q4 的重要貢獻者，建議明年改成把這筆錢丟進指數化投資。";
+    } else {
+      banner = "小賠還在安全範圍內，明年可以先設定好預算，上限到了就收手。";
+    }
+
+    resultCard.innerHTML = `
+      <div class="result-title">${title}</div>
+      <div class="result-main">${main}</div>
+      <div class="result-detail">你填寫的背景：${age}、在 ${city} 過年${types ? `，有買：${types}` : ""}。</div>
+      <div class="result-detail">${compare}</div>
+      <div class="result-banner">${banner}</div>
+    `;
+
+    // 嘗試把資料送到 Google Sheets（非必要，失敗也不影響結果顯示）
+    const payload = {
+      timestamp: new Date().toISOString(),
+      age,
+      city,
+      types,
+      spent,
+      won,
+      net,
+      roi,
+      nickname,
+    };
+
+    try {
+      await fetch(SHEET_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors", // Apps Script 常用
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.warn("寫入 Google Sheets 失敗（先不影響體驗）", err);
+    }
+  });
+</script>
+</body>
+</html>
