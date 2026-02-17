@@ -253,6 +253,36 @@
       cursor: wait;
     }
 
+    /* 桌機版微調：字放大、留白拉開，避免看起來整體太小 */
+    @media (min-width: 1024px) {
+      body {
+        font-size: 18px;
+      }
+      .wrap {
+        margin-top: 32px;
+        margin-bottom: 32px;
+        padding: 28px 32px 48px;
+      }
+      .hero-title {
+        font-size: 26px;
+      }
+      .hero-sub {
+        font-size: 15px;
+      }
+      .card h2 {
+        font-size: 24px;
+      }
+      label {
+        font-size: 18px;
+      }
+      select, input[type="text"] {
+        font-size: 17px;
+      }
+      button {
+        font-size: 18px;
+      }
+    }
+
     .badge-title {
       display: inline-block;
       padding: 4px 12px;
