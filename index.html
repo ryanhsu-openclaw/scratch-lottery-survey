@@ -347,6 +347,11 @@
       font-size: 13px;
       color: var(--muted);
     }
+    .footer-privacy {
+      margin-top: 4px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
 
     .warning-bottom {
       margin-top: 18px;
@@ -379,6 +384,7 @@
     <div class="hero-text-block">
       <div class="hero-title">馬年刮刮樂戰績大搜查</div>
       <div class="hero-sub">填完 1 分鐘，看看您是財神、贊助商，還是穩健回本仔。</div>
+      <div class="hero-sub" id="hero-count" style="margin-top:2px;font-size:13px;opacity:.9;"></div>
     </div>
   </div>
 
@@ -579,6 +585,7 @@
         </div>
       </form>
       <div class="footer-note">⚠️ 台灣法規：未滿 18 歲不得購買或兌領彩券（包括刮刮樂）。本問卷僅供滿 18 歲以上民眾分享經驗。</div>
+      <div class="footer-privacy">本站僅收集您匿名填寫之資料作統計分析使用，不收集任何個人識別資訊，您繼續使用即表示同意。</div>
     </section>
 
     <section class="card" id="result-card" style="display:none;"></section>
@@ -604,6 +611,7 @@
   const formCard = document.getElementById("form-card");
   const gameGrid = document.getElementById("game-grid");
   const loadingOverlay = document.getElementById("loading-overlay");
+  const heroCount = document.getElementById("hero-count");
 
   const TYPE_RULES = [
     // matchKey：跟自己最合得來的類型；clashKey：最容易吵架的類型
@@ -729,6 +737,36 @@
     }
   }
 
+  // 取得目前參與人數，用於 Hero 小字說明
+  async function loadParticipantCount() {
+    if (!heroCount) return;
+    try {
+      const res = await fetch(`${SHEET_ENDPOINT}?action=count`);
+      if (!res.ok) {
+        heroCount.textContent = "已有一小撮人默默在這裡公布戰績。";
+        return;
+      }
+      const data = await res.json();
+      const count = Number(data.count);
+      if (!isNaN(count) && count > 0) {
+        let label;
+        if (count < 20) {
+          label = `已有 ${count} 人默默在這裡對自己過年戰績做心理建檔。`;
+        } else if (count < 100) {
+          label = `已有 ${count} 人勇敢公開刮刮樂戰績，準備當台彩資料樣本。`;
+        } else {
+          label = `已有超過 ${count} 人完成測驗，這份戰績報告已經可以當小型民調看了。`;
+        }
+        heroCount.textContent = label;
+      } else {
+        heroCount.textContent = "還沒很多人填，現在參加就幾乎是創始股東級樣本。";
+      }
+    } catch (e) {
+      console.warn('loadParticipantCount failed', e);
+      heroCount.textContent = "已有幾位刮刮樂勇者先填好了戰績。";
+    }
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -838,6 +876,7 @@
   });
 
   showStep(1);
+  loadParticipantCount();
 </script>
 </body>
 </html>
