@@ -57,33 +57,14 @@
     }
     .hero-visual {
       position: relative;
-      width: 110px;
-      height: 80px;
+      width: 180px;
+      height: auto;
     }
-    .hero-card {
-      position: absolute;
-      inset: 8px 0 0 10px;
+    .hero-banner {
+      width: 100%;
       border-radius: 14px;
-      background: linear-gradient(135deg, #f97316, #facc15);
-      box-shadow: 0 10px 20px rgba(0,0,0,.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-    }
-    .hero-chip {
-      position: absolute;
-      bottom: -6px;
-      right: 0;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #fef9c3, #facc15, #b45309);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 6px 12px rgba(0,0,0,.35);
+      box-shadow: 0 10px 20px rgba(0,0,0,.4);
+      display: block;
     }
 
     .warning {
@@ -342,6 +323,17 @@
       letter-spacing: .08em;
     }
 
+    .result-image-wrap {
+      margin: 10px auto 4px;
+      max-width: 210px;
+    }
+    .result-type-img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.4);
+      display: block;
+    }
+
     .result-actions {
       margin-top: 16px;
       display: flex;
@@ -376,8 +368,7 @@
       <div class="hero-sub">填完 1 分鐘，看看您是財神、贊助商，還是穩健回本仔。</div>
     </div>
     <div class="hero-visual">
-      <div class="hero-card">刮</div>
-      <div class="hero-chip">💰</div>
+      <img src="img/Banner.PNG" alt="馬年刮刮樂" class="hero-banner">
     </div>
   </div>
 
@@ -611,14 +602,14 @@
 
   // 8 種幽默類型稱號 + 對應「不合」的反差稱號
   const TYPE_RULES = [
-    { key: 'A', name: '高倍數梭哈財神', clash: '小心翼翼理財馬' },
-    { key: 'B', name: '穩健回本心靈股東', clash: '豪爽贊助股東' },
-    { key: 'C', name: '小賠當買氣氛型', clash: '高倍數梭哈財神' },
-    { key: 'D', name: '台彩年度 VIP 贊助商', clash: '小心翼翼理財馬' },
-    { key: 'E', name: '佛系零損平手王', clash: '高倍數梭哈財神' },
-    { key: 'F', name: '邊刮邊當資料科學家', clash: '隨便亂買跟風王' },
-    { key: 'G', name: '全家歡樂揪團長', clash: '一人默默高面額戰士' },
-    { key: 'H', name: '小心翼翼理財馬', clash: '台彩年度 VIP 贊助商' }
+    { key: 'A', name: '高倍數梭哈財神', clash: '小心翼翼理財馬', image: 'img/Type-A.PNG' },
+    { key: 'B', name: '穩健回本心靈股東', clash: '台彩年度 VIP 贊助商', image: 'img/Type-B.PNG' },
+    { key: 'C', name: '小賠當買氣氛型', clash: '高倍數梭哈財神', image: 'img/Type-C.PNG' },
+    { key: 'D', name: '台彩年度 VIP 贊助商', clash: '小心翼翼理財馬', image: 'img/Type-D.PNG' },
+    { key: 'E', name: '佛系零損平手王', clash: '高倍數梭哈財神', image: 'img/Type-E.PNG' },
+    { key: 'F', name: '邊刮邊當資料科學家', clash: '隨便亂買跟風王', image: 'img/Type-F.PNG' },
+    { key: 'G', name: '全家歡樂揪團長', clash: '一人默默高面額戰士', image: 'img/Type-G.PNG' },
+    { key: 'H', name: '小心翼翼理財馬', clash: '台彩年度 VIP 贊助商', image: 'img/Type-H.PNG' }
   ];
 
   function showStep(n) {
@@ -742,7 +733,7 @@
 
     let banner;
     if (net > 0) {
-      banner = "今年財神有眷顧您，但還是記得：不要拿生活費跟刮刮樂硬碰硬。";
+      banner = "今年財神有眷顧您，但還是記得：不要拿生活費跟刮刮樂硬碰碰。";
     } else if (net === 0) {
       banner = "平手過年，等於買了一整套全家娛樂，還行。";
     } else if (roi < -50) {
@@ -759,6 +750,9 @@
       <div class="confetti-row">🎊 🎉 🧧</div>
       <div class="result-main">${main}</div>
       <div class="result-detail">${compare}</div>
+      <div class="result-image-wrap">
+        <img src="${typeInfo.image}" alt="${typeInfo.name}" class="result-type-img">
+      </div>
       <div class="type-section-title">合適的類型</div>
       <div class="result-detail"><span class="type-label-big">${typeInfo.name}</span></div>
       <div class="type-section-title">容易吵架的類型</div>
