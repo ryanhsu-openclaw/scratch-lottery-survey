@@ -642,7 +642,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
-  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbw2aKMK0ZYJ_lDQRF7YrTIptz1LSSkDangrpI7uOO6HjE9x_ccxbGw-V6LTd8aZMAQW/exec";
+  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbylk6pxW5M8teEaHwY9FY2QmIS1p3Npvrujp3s0lYHhqP6ySH2ry9AloEux5cv4UdiGlQ/exec";
 
   const form = document.getElementById("survey-form");
   const resultCard = document.getElementById("result-card");
@@ -654,15 +654,15 @@
   const heroCount = document.getElementById("hero-count");
 
   const TYPE_RULES = [
-    // matchKey：跟自己最合得來的類型；clashKey：最容易吵架的類型
-    { key: 'A', name: '高倍數梭哈財神',        matchKey: 'G', clashKey: 'H', image: 'img/Type-A.PNG' },
-    { key: 'B', name: '穩健回本心靈股東',      matchKey: 'H', clashKey: 'D', image: 'img/Type-B.PNG' },
-    { key: 'C', name: '小賠當買氣氛型',        matchKey: 'G', clashKey: 'A', image: 'img/Type-C.PNG' },
-    { key: 'D', name: '台彩年度 VIP 贊助商',  matchKey: 'C', clashKey: 'H', image: 'img/Type-D.PNG' },
-    { key: 'E', name: '佛系零損平手王',        matchKey: 'F', clashKey: 'A', image: 'img/Type-E.PNG' },
-    { key: 'F', name: '邊刮邊當資料科學家',    matchKey: 'B', clashKey: 'D', image: 'img/Type-F.PNG' },
-    { key: 'G', name: '全家歡樂揪團長',        matchKey: 'C', clashKey: 'D', image: 'img/Type-G.PNG' },
-    { key: 'H', name: '小心翼翼理財馬',        matchKey: 'B', clashKey: 'D', image: 'img/Type-H.PNG' }
+    // 前端只保留稱號與對應圖片；「合適/不合」關係改由 GAS 決定
+    { key: 'A', name: '高倍數梭哈財神',        image: 'img/Type-A.PNG' },
+    { key: 'B', name: '穩健回本心靈股東',      image: 'img/Type-B.PNG' },
+    { key: 'C', name: '小賠當買氣氛型',        image: 'img/Type-C.PNG' },
+    { key: 'D', name: '台彩年度 VIP 贊助商',  image: 'img/Type-D.PNG' },
+    { key: 'E', name: '佛系零損平手王',        image: 'img/Type-E.PNG' },
+    { key: 'F', name: '邊刮邊當資料科學家',    image: 'img/Type-F.PNG' },
+    { key: 'G', name: '全家歡樂揪團長',        image: 'img/Type-G.PNG' },
+    { key: 'H', name: '小心翼翼理財馬',        image: 'img/Type-H.PNG' }
   ];
 
   function showStep(n) {
@@ -844,8 +844,24 @@
     if (percentile > 99) percentile = 99;
 
     const typeInfo = classifyType(spent, net, types);
-    const clashType = TYPE_RULES.find(t => t.key === typeInfo.clashKey) || TYPE_RULES[0];
-    const matchType = TYPE_RULES.find(t => t.key === (typeInfo.matchKey || typeInfo.key)) || typeInfo;
+
+    // 從 GAS 取得合適/不合拍類型名稱（避免在前端暴露配對規則）
+    let matchName = '';
+    let clashName = '';
+    try {
+      const typeRes = await fetch(`${SHEET_ENDPOINT}?action=typeInfo&typeKey=${encodeURIComponent(typeInfo.key)}`);
+      if (typeRes.ok) {
+        const typeData = await typeRes.json();
+        if (typeof typeData.matchName === 'string') matchName = typeData.matchName;
+        if (typeof typeData.clashName === 'string') clashName = typeData.clashName;
+        // 若 GAS 有回傳覆蓋後的 typeName，就用它；否則維持原本前端名稱
+        if (typeof typeData.typeName === 'string' && typeData.typeName.trim()) {
+          typeInfo.name = typeData.typeName;
+        }
+      }
+    } catch (e) {
+      console.warn('typeInfo fetch failed', e);
+    }
 
     const main = `這次您總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
     const compare = `在目前累積的參與者中，您大約落在前 ${percentile}% 的區間（僅供參考）。`;
@@ -875,11 +891,11 @@
       <div class="type-row">
         <div class="type-col">
           <div class="type-section-title">合適的類型</div>
-          <div class="result-detail"><span class="type-label-big">${matchType.name}</span></div>
+          <div class="result-detail"><span class="type-label-big">${matchName || '資料載入中，請稍後再試'}</span></div>
         </div>
         <div class="type-col">
           <div class="type-section-title">容易吵架的類型</div>
-          <div class="result-detail"><span class="type-label-big">${clashType.name}</span></div>
+          <div class="result-detail"><span class="type-label-big">${clashName || '資料載入中，請稍後再試'}</span></div>
         </div>
       </div>
       <div class="result-banner">${banner}</div>
@@ -898,10 +914,8 @@
       won,
       net,
       roi,
-      // 讓 GAS 也能知道是哪一型，以及合適 / 容易吵架的對象
+      // 讓 GAS 也能知道是哪一型，實際配對關係在 GAS 端處理
       typeKey: typeInfo.key,
-      matchKey: matchType.key,
-      clashKey: clashType.key,
       nickname: typeInfo.name,
     };
 
