@@ -23,8 +23,8 @@
       margin: 0;
       min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      /* 調整為單一方向漸層，避免底部再出現一塊亮橘色 */
-      background: linear-gradient(to bottom, var(--bg-mid) 0%, var(--bg-bottom) 70%, var(--bg-bottom) 100%);
+      /* 固定整頁深紅底色，避免底部再長出一塊不同顏色 */
+      background: var(--bg-bottom);
       color: var(--text);
       font-size: 17px;
     }
@@ -33,6 +33,10 @@
       margin: 0 auto;
       padding: 20px 16px 40px;
       position: relative;
+      /* 在深紅底上疊一層輕微橘色漸層，整體一致 */
+      background: radial-gradient(circle at top, var(--bg-top) 0, var(--bg-mid) 50%, var(--bg-bottom) 100%);
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.45);
     }
 
     .hero-strip {
@@ -291,8 +295,15 @@
       font-size: 16px;
     }
 
-    .type-section-title {
+    .type-row {
+      display: flex;
+      gap: 12px;
       margin-top: 10px;
+    }
+    .type-col {
+      flex: 1;
+    }
+    .type-section-title {
       font-size: 14px;
       font-weight: 700;
       color: #7f1d1d;
@@ -353,6 +364,9 @@
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -571,6 +585,14 @@
   </div>
 </div>
 
+<!-- 載入中覆蓋層 -->
+<div id="loading-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:999; align-items:center; justify-content:center;">
+  <div style="background:#111827; color:#e5e7eb; padding:14px 18px; border-radius:999px; display:flex; align-items:center; gap:10px; box-shadow:0 10px 25px rgba(0,0,0,.6);">
+    <div class="spinner" style="width:18px;height:18px;border-radius:999px;border:2px solid rgba(249,250,251,.3);border-top-color:#fbbf24;animation:spin 0.7s linear infinite;"></div>
+    <div style="font-size:14px;">正在結算戰績…</div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
   const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwlG_o5n-TsPoS7_l89ngOjEVBa5YkwoCgz2vwwDhNv45kxAy2f_URXvLurOSRpSIss7A/exec";
@@ -581,16 +603,18 @@
   const steps = Array.from(document.querySelectorAll(".step"));
   const formCard = document.getElementById("form-card");
   const gameGrid = document.getElementById("game-grid");
+  const loadingOverlay = document.getElementById("loading-overlay");
 
   const TYPE_RULES = [
-    { key: 'A', name: '高倍數梭哈財神',        clashKey: 'H', image: 'img/Type-A.PNG' },
-    { key: 'B', name: '穩健回本心靈股東',      clashKey: 'D', image: 'img/Type-B.PNG' },
-    { key: 'C', name: '小賠當買氣氛型',        clashKey: 'A', image: 'img/Type-C.PNG' },
-    { key: 'D', name: '台彩年度 VIP 贊助商',  clashKey: 'H', image: 'img/Type-D.PNG' },
-    { key: 'E', name: '佛系零損平手王',        clashKey: 'A', image: 'img/Type-E.PNG' },
-    { key: 'F', name: '邊刮邊當資料科學家',    clashKey: 'D', image: 'img/Type-F.PNG' },
-    { key: 'G', name: '全家歡樂揪團長',        clashKey: 'D', image: 'img/Type-G.PNG' },
-    { key: 'H', name: '小心翼翼理財馬',        clashKey: 'D', image: 'img/Type-H.PNG' }
+    // matchKey：跟自己最合得來的類型；clashKey：最容易吵架的類型
+    { key: 'A', name: '高倍數梭哈財神',        matchKey: 'G', clashKey: 'H', image: 'img/Type-A.PNG' },
+    { key: 'B', name: '穩健回本心靈股東',      matchKey: 'H', clashKey: 'D', image: 'img/Type-B.PNG' },
+    { key: 'C', name: '小賠當買氣氛型',        matchKey: 'G', clashKey: 'A', image: 'img/Type-C.PNG' },
+    { key: 'D', name: '台彩年度 VIP 贊助商',  matchKey: 'C', clashKey: 'H', image: 'img/Type-D.PNG' },
+    { key: 'E', name: '佛系零損平手王',        matchKey: 'F', clashKey: 'A', image: 'img/Type-E.PNG' },
+    { key: 'F', name: '邊刮邊當資料科學家',    matchKey: 'B', clashKey: 'D', image: 'img/Type-F.PNG' },
+    { key: 'G', name: '全家歡樂揪團長',        matchKey: 'C', clashKey: 'D', image: 'img/Type-G.PNG' },
+    { key: 'H', name: '小心翼翼理財馬',        matchKey: 'B', clashKey: 'D', image: 'img/Type-H.PNG' }
   ];
 
   function showStep(n) {
@@ -695,6 +719,8 @@
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    if (loadingOverlay) loadingOverlay.style.display = "flex";
+
     const formData = new FormData(form);
     const age = formData.get("age");
     const city = formData.get("city");
@@ -709,7 +735,7 @@
     const roi = spent > 0 ? (net / spent) * 100 : 0;
 
     let percentile = await getPercentileFromSheet(roi);
-    if (percentile === null) {
+    if (percentile === null || isNaN(percentile)) {
       if (spent === 0) {
         percentile = 50;
       } else if (roi >= 50) {
@@ -722,9 +748,13 @@
         percentile = 25;
       }
     }
+    // 安全範圍：避免出現 0% 或 100%
+    if (percentile < 1) percentile = 1;
+    if (percentile > 99) percentile = 99;
 
     const typeInfo = classifyType(spent, net, types);
     const clashType = TYPE_RULES.find(t => t.key === typeInfo.clashKey) || TYPE_RULES[0];
+    const matchType = TYPE_RULES.find(t => t.key === (typeInfo.matchKey || typeInfo.key)) || typeInfo;
 
     const main = `這次您總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
     const compare = `在目前累積的參與者中，您大約落在前 ${percentile}% 的區間（僅供參考）。`;
@@ -751,10 +781,16 @@
       <div class="result-image-wrap">
         <img src="${typeInfo.image}" alt="${typeInfo.name}" class="result-type-img">
       </div>
-      <div class="type-section-title">合適的類型</div>
-      <div class="result-detail"><span class="type-label-big">${typeInfo.name}</span></div>
-      <div class="type-section-title">容易吵架的類型</div>
-      <div class="result-detail"><span class="type-label-big">${clashType.name}</span></div>
+      <div class="type-row">
+        <div class="type-col">
+          <div class="type-section-title">合適的類型</div>
+          <div class="result-detail"><span class="type-label-big">${matchType.name}</span></div>
+        </div>
+        <div class="type-col">
+          <div class="type-section-title">容易吵架的類型</div>
+          <div class="result-detail"><span class="type-label-big">${clashType.name}</span></div>
+        </div>
+      </div>
       <div class="result-banner">${banner}</div>
       <div class="result-actions">
         <button type="button" onclick="downloadResultImage()">下載成果</button>
@@ -783,6 +819,8 @@
       });
     } catch (err) {
       console.warn("寫入 Google Sheets 失敗（先不影響體驗）", err);
+    } finally {
+      if (loadingOverlay) loadingOverlay.style.display = "none";
     }
   });
 
