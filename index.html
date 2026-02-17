@@ -574,7 +574,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
-  const SHEET_ENDPOINT = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyHZIQ5G_Cr4cmCQCWq7xZmzrCwafeXU63Mu6Mn11feuTrbxJyVUtZN7FCh3nRIuCNVXg/exec";
 
   const form = document.getElementById("survey-form");
   const resultCard = document.getElementById("result-card");
@@ -655,27 +655,6 @@
   function playAgain() {
     // 重新載入頁面，回到第一題
     window.location.href = window.location.pathname + window.location.search;
-  }
-
-  async function shareResult(text) {
-    // 目前瀏覽器限制無法直接分享到 IG 貼文，只能呼叫系統分享面板或複製文字
-    const shareUrl = window.location.href.split("?")[0];
-    const finalText = text || "我剛做了過年刮刮樂戰績調查，一起來看看你是財神還是贊助商！";
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: "過年刮刮樂戰績調查", text: finalText, url: shareUrl });
-        return;
-      }
-      const shareMessage = `${finalText}\n${shareUrl}`;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(shareMessage);
-        alert("已複製結果連結，快貼到社群跟朋友分享！");
-      } else {
-        alert("瀏覽器不支援自動複製，您可以手動分享網址：" + shareUrl);
-      }
-    } catch (e) {
-      alert("這個瀏覽器暫時無法直接開分享面板，可以改用下載圖片分享。");
-    }
   }
 
   function parseMoney(value) {
