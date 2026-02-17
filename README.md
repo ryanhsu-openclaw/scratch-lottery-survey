@@ -16,6 +16,7 @@
 
 ## 待辦
 
-- [ ] 將刮刮樂類型選項改為依照台彩官方遊戲名稱
-- [ ] 串接 Google Apps Script 寫入 Google Sheets
-- [ ] 用 Sheets 統計分布，改掉現在的模擬百分位
+- [x] 將刮刮樂類型選項改為依照台彩官方遊戲名稱
+- [x] 串接 Google Apps Script 寫入 Google Sheets
+- [x] 用 Sheets 統計分布，改掉現在的模擬百分位
+- [ ] 製作統計分析 Dashboard，嵌回網站給使用者查看（長條圖、折線圖、地圖分布等視覺化戰績回饋）。
