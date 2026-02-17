@@ -56,13 +56,15 @@
     }
 
     @media (min-width: 1024px) {
+      /* 電腦版：整張 banner 等比例縮小，完整呈現，不裁切 */
       .hero-banner-wrap {
-        max-height: 260px;
+        max-width: 780px;
+        margin-left: auto;
+        margin-right: auto;
       }
       .hero-banner {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+        height: auto;
       }
     }
     .hero-text-block {
