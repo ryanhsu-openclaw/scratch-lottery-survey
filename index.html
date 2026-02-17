@@ -133,11 +133,28 @@
       transform: translateY(-1px);
     }
 
+    .money-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .money-row select {
+      flex: 0 0 80px;
+    }
+    .money-row input[type="text"] {
+      flex: 1;
+    }
+
     .game-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 10px 14px;
       margin-top: 8px;
+    }
+    @media (max-width: 600px) {
+      .game-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
     .game-card {
       position: relative;
@@ -336,81 +353,140 @@
         <div class="step" data-step="3">
           <label>您今年都買了哪些刮刮樂？（可複選）</label>
           <div class="game-grid" id="game-grid">
-            <!-- 這裡的卡片可以按照您從台彩官網整理的清單再替換，目前先放代表性款式 -->
-            <label class="game-card" data-value="金牌777（500 元）">
-              <input type="checkbox" name="types" value="金牌777（500 元）">
-              <div class="game-icon">7️⃣</div>
+            <!-- 依照表格，金額由小到大排序 -->
+            <!-- $100 -->
+            <label class="game-card" data-value="馬年行大運（$100）">
+              <input type="checkbox" name="types" value="馬年行大運（$100）">
+              <div class="game-icon">🐴</div>
               <div>
-                <div class="game-text-title">金牌777</div>
-                <div class="game-text-meta">500 元 · 經典 777 主題</div>
+                <div class="game-text-title">馬年行大運</div>
+                <div class="game-text-meta">$100 · 馬年限定款，當小禮物很有年味</div>
               </div>
             </label>
-            <label class="game-card" data-value="一路發（200 元）">
-              <input type="checkbox" name="types" value="一路發（200 元）">
-              <div class="game-icon">8️⃣</div>
+            <label class="game-card" data-value="推金幣（$100）">
+              <input type="checkbox" name="types" value="推金幣（$100）">
+              <div class="game-icon">🪙</div>
               <div>
-                <div class="game-text-title">一路發</div>
-                <div class="game-text-meta">200 元 · 喜氣一路發發發</div>
+                <div class="game-text-title">推金幣</div>
+                <div class="game-text-meta">$100 · 金幣主題，畫面滿滿金色元素</div>
               </div>
             </label>
-            <label class="game-card" data-value="加倍旺（200 元）">
-              <input type="checkbox" name="types" value="加倍旺（200 元）">
+            <label class="game-card" data-value="財神報到（$100）">
+              <input type="checkbox" name="types" value="財神報到（$100）">
+              <div class="game-icon">🧨</div>
+              <div>
+                <div class="game-text-title">財神報到</div>
+                <div class="game-text-meta">$100 · 招財感強，拿來討個吉利</div>
+              </div>
+            </label>
+            <label class="game-card" data-value="財源滾滾（$100）">
+              <input type="checkbox" name="types" value="財源滾滾（$100）">
               <div class="game-icon">📈</div>
               <div>
-                <div class="game-text-title">加倍旺</div>
-                <div class="game-text-meta">200 元 · 加倍贏、加倍旺</div>
+                <div class="game-text-title">財源滾滾</div>
+                <div class="game-text-meta">$100 · 入手門檻低，適合路過小試手氣</div>
               </div>
             </label>
-            <label class="game-card" data-value="無敵威力（300 元）">
-              <input type="checkbox" name="types" value="無敵威力（300 元）">
-              <div class="game-icon">💥</div>
+
+            <!-- $200 -->
+            <label class="game-card" data-value="大三元（$200）">
+              <input type="checkbox" name="types" value="大三元（$200）">
+              <div class="game-icon">🀄</div>
               <div>
-                <div class="game-text-title">無敵威力</div>
-                <div class="game-text-meta">300 元 · 威力滿滿的盤面</div>
+                <div class="game-text-title">大三元</div>
+                <div class="game-text-meta">$200 · 經典款式，過年桌遊氛圍濃厚</div>
               </div>
             </label>
-            <label class="game-card" data-value="金甜蜜（100 元）">
-              <input type="checkbox" name="types" value="金甜蜜（100 元）">
-              <div class="game-icon">🐻</div>
+            <label class="game-card" data-value="金好鑽（$200）">
+              <input type="checkbox" name="types" value="金好鑽（$200）">
+              <div class="game-icon">💎</div>
               <div>
-                <div class="game-text-title">金甜蜜</div>
-                <div class="game-text-meta">100 元 · 熊熊與金幣</div>
+                <div class="game-text-title">金好鑽</div>
+                <div class="game-text-meta">$200 · 鑽石主題，適合喜歡亮晶晶風格</div>
               </div>
             </label>
-            <label class="game-card" data-value="刮刮金樂透（200 元）">
-              <input type="checkbox" name="types" value="刮刮金樂透（200 元）">
-              <div class="game-icon">💲</div>
+            <label class="game-card" data-value="獎金樂翻倍（$200）">
+              <input type="checkbox" name="types" value="獎金樂翻倍（$200）">
+              <div class="game-icon">🔁</div>
               <div>
-                <div class="game-text-title">刮刮金樂透</div>
-                <div class="game-text-meta">200 元 · 樂透感滿滿</div>
+                <div class="game-text-title">獎金樂翻倍</div>
+                <div class="game-text-meta">$200 · 有翻倍機制，適合喜歡小驚喜</div>
               </div>
             </label>
-            <label class="game-card" data-value="星際尋寶（200 元）">
-              <input type="checkbox" name="types" value="星際尋寶（200 元）">
-              <div class="game-icon">🪐</div>
+            <label class="game-card" data-value="獎金嘉年華（$200）">
+              <input type="checkbox" name="types" value="獎金嘉年華（$200）">
+              <div class="game-icon">🎪</div>
               <div>
-                <div class="game-text-title">星際尋寶</div>
-                <div class="game-text-meta">200 元 · 太空尋寶主題</div>
+                <div class="game-text-title">獎金嘉年華</div>
+                <div class="game-text-meta">$200 · 名稱喜氣，適合大家一起邊刮邊聊</div>
               </div>
             </label>
-            <label class="game-card" data-value="歡樂雙星（200 元）">
-              <input type="checkbox" name="types" value="歡樂雙星（200 元）">
-              <div class="game-icon">⭐</div>
+
+            <!-- $300 -->
+            <label class="game-card" data-value="海底大尋寶（$300）">
+              <input type="checkbox" name="types" value="海底大尋寶（$300）">
+              <div class="game-icon">🐟</div>
               <div>
-                <div class="game-text-title">歡樂雙星</div>
-                <div class="game-text-meta">200 元 · 星星圖案超繽紛</div>
+                <div class="game-text-title">海底大尋寶</div>
+                <div class="game-text-meta">$300 · 版面豐富，適合喜歡多格遊戲的玩家</div>
               </div>
             </label>
-            <label class="game-card" data-value="其他">
-              <input type="checkbox" name="types" value="其他">
-              <div class="game-icon">✨</div>
+            <label class="game-card" data-value="好運連發（$300）">
+              <input type="checkbox" name="types" value="好運連發（$300）">
+              <div class="game-icon">🎉</div>
               <div>
-                <div class="game-text-title">其他款式</div>
-                <div class="game-text-meta">上面沒列到的都算在這裡</div>
+                <div class="game-text-title">好運連發</div>
+                <div class="game-text-meta">$300 · 連線感強，視覺效果偏熱鬧</div>
+              </div>
+            </label>
+
+            <!-- $500 -->
+            <label class="game-card" data-value="哈啾咪（$500）">
+              <input type="checkbox" name="types" value="哈啾咪（$500）">
+              <div class="game-icon">😺</div>
+              <div>
+                <div class="game-text-title">哈啾咪</div>
+                <div class="game-text-meta">$500 · 畫風活潑，適合喜歡可愛風格的玩家</div>
+              </div>
+            </label>
+            <label class="game-card" data-value="五路財神（$500）">
+              <input type="checkbox" name="types" value="五路財神（$500）">
+              <div class="game-icon">🧧</div>
+              <div>
+                <div class="game-text-title">五路財神</div>
+                <div class="game-text-meta">$500 · 傳統財神路線，年節儀式感滿滿</div>
+              </div>
+            </label>
+            <label class="game-card" data-value="金馬獎（$500）">
+              <input type="checkbox" name="types" value="金馬獎（$500）">
+              <div class="game-icon">🏆</div>
+              <div>
+                <div class="game-text-title">金馬獎</div>
+                <div class="game-text-meta">$500 · 100% 中獎，偏向「買體驗」型玩法</div>
+              </div>
+            </label>
+
+            <!-- $1000 -->
+            <label class="game-card" data-value="1200萬大吉利（$1,000）">
+              <input type="checkbox" name="types" value="1200萬大吉利（$1,000）">
+              <div class="game-icon">💰</div>
+              <div>
+                <div class="game-text-title">1200萬大吉利</div>
+                <div class="game-text-meta">$1,000 · 中獎率高、節奏偏快的高面額款</div>
+              </div>
+            </label>
+
+            <!-- $2000 -->
+            <label class="game-card" data-value="2000萬超級紅包（$2,000）">
+              <input type="checkbox" name="types" value="2000萬超級紅包（$2,000）">
+              <div class="game-icon">🧧</div>
+              <div>
+                <div class="game-text-title">2000萬超級紅包</div>
+                <div class="game-text-meta">$2,000 · 高單價大獎型，適合揪團一起拚手氣</div>
               </div>
             </label>
           </div>
-          <div class="hint">品名可以先勾大致系列，之後會再對齊台彩官方完整清單。</div>
+          <div class="hint">可勾選實際購買的款式，或最接近的系列。</div>
           <div class="nav-buttons">
             <button type="button" class="back" data-prev>上一題</button>
             <button type="button" data-next>下一題</button>
@@ -430,9 +506,15 @@
 
         <!-- Step 5: Won -->
         <div class="step" data-step="5">
-          <label for="won">最後您贏了多少錢？（可填 0 或負值，負代表賠錢）</label>
-          <input id="won" name="won" type="text" inputmode="decimal" placeholder="例如 5000 或 -800" required>
-          <div class="hint">例如：贏 5000 就填 5000；整體小賠 800 就填 -800；完全沒輸沒贏就填 0。</div>
+          <label for="won-amount">最後您賺賠多少錢？</label>
+          <div class="money-row">
+            <select id="won-sign" name="won-sign">
+              <option value="+">+ 賺</option>
+              <option value="-">- 賠</option>
+            </select>
+            <input id="won-amount" name="won-amount" type="text" inputmode="decimal" pattern="[0-9]*" placeholder="請輸入金額，例如 5000 或 800" required>
+          </div>
+          <div class="hint">例如：賺 5000 請選「+ 賺」並輸入 5000；整體小賠 800 請選「- 賠」並輸入 800；完全沒輸沒贏請選任一符號並輸入 0。</div>
           <div class="nav-buttons">
             <button type="button" class="back" data-prev>上一題</button>
             <button type="submit">送出戰報</button>
@@ -529,27 +611,27 @@
   async function shareResult(text) {
     const shareUrl = window.location.href.split("?")[0];
     const finalText = text || "我剛做了過年刮刮樂戰績調查，一起來看看你是財神還是贊助商！";
-    if (navigator.share) {
-      try {
+    try {
+      if (navigator.share) {
         await navigator.share({ title: "過年刮刮樂戰績調查", text: finalText, url: shareUrl });
-      } catch (e) {
-        console.warn("使用者取消分享", e);
+        return;
       }
-    } else {
       const shareMessage = `${finalText}\n${shareUrl}`;
-      navigator.clipboard?.writeText(shareMessage).then(() => {
-        alert("已複製結果連結，快貼到群組跟朋友炫耀或取暖！");
-      }).catch(() => {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(shareMessage);
+        alert("已複製結果連結，快貼到群組跟朋友分享！");
+      } else {
         alert("瀏覽器不支援自動複製，您可以手動分享網址：" + shareUrl);
-      });
+      }
+    } catch (e) {
+      alert("這個瀏覽器暫時無法直接開分享面板，請改用下載圖片的方式分享。");
     }
   }
 
-  function parseMoney(value, allowNegative = false) {
+  function parseMoney(value) {
     if (!value) return 0;
-    const cleaned = value.toString().replace(/[^0-9-]/g, "");
-    let num = Number(cleaned);
-    if (!allowNegative && num < 0) num = 0;
+    const cleaned = value.toString().replace(/[^0-9]/g, "");
+    const num = Number(cleaned);
     return isNaN(num) ? 0 : num;
   }
 
@@ -560,8 +642,11 @@
     const age = formData.get("age");
     const city = formData.get("city");
     const types = formData.getAll("types").join(", ");
-    const spent = parseMoney(formData.get("spent"), false);
-    const won = parseMoney(formData.get("won"), true);
+    const spent = parseMoney(formData.get("spent"));
+
+    const wonSign = formData.get("won-sign") === "-" ? -1 : 1;
+    const wonAmount = parseMoney(formData.get("won-amount"));
+    const won = wonSign * wonAmount;
 
     const net = won - spent;
     const roi = spent > 0 ? (net / spent) * 100 : 0;
