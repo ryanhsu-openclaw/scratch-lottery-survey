@@ -244,6 +244,17 @@
       font-size: 16px;
     }
 
+    .result-actions {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .result-actions button {
+      flex: 1;
+      min-width: 140px;
+    }
+
     .footer-note {
       margin-top: 10px;
       font-size: 13px;
@@ -258,12 +269,13 @@
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1>🧧🐴 過年刮刮樂戰績調查</h1>
-    <div class="subtitle">馬年財運大點名：看看你是財神、贊助商，還是傳說中的「回本仔」？</div>
+    <div class="subtitle">馬年財運大點名：看看您是財神、贊助商，還是傳說中的「回本仔」？</div>
     <div class="lantern-row">
       <div class="lantern">福</div>
       <div class="lantern">馬年行大運</div>
@@ -276,14 +288,14 @@
 
   <div class="layout" id="survey-section">
     <section class="card">
-      <h2>填寫你的過年刮刮樂戰報</h2>
+      <h2>填寫您的過年刮刮樂戰報</h2>
       <div class="progress-shell">
         <div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div>
       </div>
       <form id="survey-form">
         <!-- Step 1: Age -->
         <div class="step active" data-step="1">
-          <label for="age">你幾歲？</label>
+          <label for="age">您幾歲？</label>
           <select id="age" name="age" required>
             <option value="" disabled selected>請選擇年齡區間（僅限 18 歲以上）</option>
             <option>18–24 歲</option>
@@ -301,7 +313,7 @@
 
         <!-- Step 2: City -->
         <div class="step" data-step="2">
-          <label for="city">在哪裡過年？</label>
+          <label for="city">您在哪裡過年？</label>
           <select id="city" name="city" required>
             <option value="" disabled selected>請選擇縣市</option>
             <option>台北市</option><option>新北市</option><option>基隆市</option>
@@ -320,10 +332,10 @@
 
         <!-- Step 3: Scratch games -->
         <div class="step" data-step="3">
-          <label>你今年都買了哪些刮刮樂？（可複選）</label>
+          <label>您今年都買了哪些刮刮樂？（可複選）</label>
           <div class="game-grid" id="game-grid">
             <label class="game-card" data-value="馬年行大運（100 元）">
-              <input type="checkbox" name="types" value="馬年行大運（100 元)">
+              <input type="checkbox" name="types" value="馬年行大運（100 元）">
               <div class="game-icon">🐴</div>
               <div>
                 <div class="game-text-title">馬年行大運</div>
@@ -404,7 +416,7 @@
 
         <!-- Step 4: Spent -->
         <div class="step" data-step="4">
-          <label for="spent">總共買了多少錢的刮刮樂？（元）</label>
+          <label for="spent">您總共買了多少錢的刮刮樂？（元）</label>
           <input id="spent" name="spent" type="number" inputmode="decimal" min="0" step="1" required>
           <div class="hint">可以填 0，代表只是幫家人刮、自己沒花錢。</div>
           <div class="nav-buttons">
@@ -415,7 +427,7 @@
 
         <!-- Step 5: Won -->
         <div class="step" data-step="5">
-          <label for="won">最後贏了多少錢？（可填 0 或負值，負代表賠錢）</label>
+          <label for="won">最後您贏了多少錢？（可填 0 或負值，負代表賠錢）</label>
           <input id="won" name="won" type="number" inputmode="decimal" step="1" required>
           <div class="hint">例如：贏 5000 就填 5000；整體小賠 800 就填 -800；完全沒輸沒贏就填 0。</div>
           <div class="nav-buttons">
@@ -431,6 +443,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
   const SHEET_ENDPOINT = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
@@ -458,15 +471,17 @@
   }
 
   // 刮刮樂卡片點擊效果
-  gameGrid.addEventListener("click", (e) => {
-    const card = e.target.closest(".game-card");
-    if (!card) return;
-    const checkbox = card.querySelector('input[type="checkbox"]');
-    checkbox.checked = !checkbox.checked;
-    card.classList.toggle("selected", checkbox.checked);
-  });
+  if (gameGrid) {
+    gameGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".game-card");
+      if (!card) return;
+      const checkbox = card.querySelector('input[type="checkbox"]');
+      checkbox.checked = !checkbox.checked;
+      card.classList.toggle("selected", checkbox.checked);
+    });
+  }
 
-  // 按「下一題」切換步驟
+  // 按「下一題」切換步驟與上一題返回
   steps.forEach((step, idx) => {
     const nextBtn = step.querySelector("[data-next]");
     const prevBtn = step.querySelector("[data-prev]");
@@ -480,11 +495,10 @@
             return;
           }
         }
-        // 特別檢查第 3 題至少勾一個類型
         if (step.dataset.step === "3") {
           const checked = step.querySelectorAll('input[name="types"]:checked');
           if (!checked.length) {
-            alert("至少勾選一種刮刮樂，才好幫你算戰績！");
+            alert("至少勾選一種刮刮樂，才好幫您算戰績！");
             return;
           }
         }
@@ -498,6 +512,35 @@
       });
     }
   });
+
+  async function downloadResultImage() {
+    const card = resultCard;
+    if (!card) return;
+    const canvas = await html2canvas(card, {backgroundColor: "#fff"});
+    const link = document.createElement("a");
+    link.download = "scratch-lottery-result.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }
+
+  async function shareResult(text) {
+    const shareUrl = window.location.href.split("?")[0];
+    const finalText = text || "我剛做了過年刮刮樂戰績調查，一起來看看你是財神還是贊助商！";
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "過年刮刮樂戰績調查", text: finalText, url: shareUrl });
+      } catch (e) {
+        console.warn("使用者取消分享", e);
+      }
+    } else {
+      const shareMessage = `${finalText}\n${shareUrl}`;
+      navigator.clipboard?.writeText(shareMessage).then(() => {
+        alert("已複製結果連結，快貼到群組跟朋友炫耀或取暖！");
+      }).catch(() => {
+        alert("瀏覽器不支援自動複製，您可以手動分享網址：" + shareUrl);
+      });
+    }
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -527,31 +570,37 @@
 
     const randomTitle = TITLES[Math.floor(Math.random() * TITLES.length)];
 
-    const title = net >= 0 ? "恭喜，你是這波的財神之一！" : "辛苦了，你正式成為台彩無名股東。";
-    const main = `這次你總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
-    const compare = `依照目前的模擬分佈，你大約贏過約 ${percentile}% 的參與者。`;
+    const title = net >= 0 ? "恭喜，您是這波的財神之一！" : "辛苦了，您正式成為台彩無名股東。";
+    const main = `這次您總共 ${spent.toLocaleString()} 元刮刮樂，最後${net >= 0 ? "小賺" : "小賠"} ${Math.abs(net).toLocaleString()} 元（投報率約 ${roi.toFixed(1)}%）`;
+    const compare = `依照目前的模擬分佈，您大約贏過約 ${percentile}% 的參與者。`;
 
     let banner;
     if (net > 0) {
-      banner = "今年財神有眷顧你，但還是記得：不要拿生活費跟刮刮樂硬碰硬。";
+      banner = "今年財神有眷顧您，但還是記得：不要拿生活費跟刮刮樂硬碰硬。";
     } else if (net === 0) {
       banner = "平手過年，等於買了一整套全家娛樂，還行。";
     } else if (roi < -50) {
-      banner = "你是台彩 Q4 的重要貢獻者，建議明年改成把這筆錢丟進指數化投資。";
+      banner = "您是台彩 Q4 的重要貢獻者，建議明年改成把這筆錢丟進指數化投資。";
     } else {
       banner = "小賠還在安全範圍內，明年可以先設定好預算，上限到了就收手。";
     }
+
+    const shareText = `我的馬年刮刮樂稱號是「${randomTitle}」，${main}，${compare}`;
 
     // 問卷結果畫面：只保留結果，不再顯示題目
     surveySection.style.display = "none";
     resultCard.style.display = "block";
     resultCard.innerHTML = `
       <div class="result-title">${title}</div>
-      <div class="result-main">本次系統頒給你的馬年稱號是：<strong>${randomTitle}</strong></div>
+      <div class="result-main">本次系統頒給您的馬年稱號是：<strong>${randomTitle}</strong></div>
       <div class="result-main">${main}</div>
       <div class="result-detail">背景資料：${age}、在 ${city} 過年${types ? `，有買：${types}` : ""}。</div>
       <div class="result-detail">${compare}</div>
       <div class="result-banner">${banner}</div>
+      <div class="result-actions">
+        <button type="button" onclick="downloadResultImage()">下載結果圖片</button>
+        <button type="button" onclick="shareResult(${JSON.stringify(shareText)})">分享結果給親友</button>
+      </div>
     `;
 
     const payload = {
