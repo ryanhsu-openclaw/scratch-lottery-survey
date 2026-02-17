@@ -32,11 +32,26 @@
       max-width: 960px;
       margin: 0 auto;
       padding: 20px 16px 40px;
+      position: relative;
     }
+    .decor-coin {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fef9c3, #facc15, #b45309);
+      opacity: 0.26;
+      filter: blur(1px);
+      z-index: -1;
+    }
+    .decor-coin.coin-left { top: 40px; left: -10px; }
+    .decor-coin.coin-right { top: 140px; right: -20px; }
+
     header {
       text-align: center;
       margin-bottom: 16px;
       color: #fef2f2;
+      position: relative;
     }
     h1 {
       margin: 0 0 6px;
@@ -86,17 +101,29 @@
 
     .card {
       background: var(--panel);
-      border-radius: 16px;
+      border-radius: 18px;
       border: 1px solid var(--border);
       padding: 18px 20px 20px;
       box-shadow: 0 16px 34px rgba(127, 29, 29, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(254, 243, 199, .6), transparent 60%);
+      opacity: 0.75;
+      pointer-events: none;
     }
     .card h2 {
       margin: 0 0 12px;
       font-size: 22px;
+      position: relative;
+      z-index: 1;
     }
 
-    .progress-shell { margin-bottom: 14px; }
+    .progress-shell { margin-bottom: 14px; position: relative; z-index: 1; }
     .progress-track {
       width: 100%;
       height: 10px;
@@ -116,6 +143,8 @@
       display: block;
       margin: 14px 0 6px;
       font-size: 17px;
+      position: relative;
+      z-index: 1;
     }
     select, input[type="text"] {
       width: 100%;
@@ -126,6 +155,8 @@
       color: var(--text);
       font-size: 16px;
       transition: box-shadow 0.2s ease, transform 0.08s ease;
+      position: relative;
+      z-index: 1;
     }
     select:focus, input:focus {
       outline: none;
@@ -150,6 +181,8 @@
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 10px 14px;
       margin-top: 8px;
+      position: relative;
+      z-index: 1;
     }
     @media (max-width: 600px) {
       .game-grid {
@@ -195,12 +228,16 @@
     .hint {
       font-size: 14px;
       color: var(--muted);
+      position: relative;
+      z-index: 1;
     }
 
     .nav-buttons {
       display: flex;
       gap: 10px;
       margin-top: 18px;
+      position: relative;
+      z-index: 1;
     }
     .nav-buttons button { flex: 1; }
     .nav-buttons .back {
@@ -311,6 +348,9 @@
 </head>
 <body>
 <div class="wrap">
+  <div class="decor-coin coin-left"></div>
+  <div class="decor-coin coin-right"></div>
+
   <header>
     <h1>🧧🐴 過年刮刮樂戰績調查</h1>
     <div class="subtitle">馬年財運大點名：看看您是財神、贊助商，還是傳說中的「回本仔」？</div>
@@ -612,7 +652,13 @@
     link.click();
   }
 
+  function playAgain() {
+    // 重新載入頁面，回到第一題
+    window.location.href = window.location.pathname + window.location.search;
+  }
+
   async function shareResult(text) {
+    // 目前瀏覽器限制無法直接分享到 IG 貼文，只能呼叫系統分享面板或複製文字
     const shareUrl = window.location.href.split("?")[0];
     const finalText = text || "我剛做了過年刮刮樂戰績調查，一起來看看你是財神還是贊助商！";
     try {
@@ -623,12 +669,12 @@
       const shareMessage = `${finalText}\n${shareUrl}`;
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(shareMessage);
-        alert("已複製結果連結，快貼到群組跟朋友分享！");
+        alert("已複製結果連結，快貼到社群跟朋友分享！");
       } else {
         alert("瀏覽器不支援自動複製，您可以手動分享網址：" + shareUrl);
       }
     } catch (e) {
-      alert("這個瀏覽器暫時無法直接開分享面板，請改用下載圖片的方式分享。");
+      alert("這個瀏覽器暫時無法直接開分享面板，可以改用下載圖片分享。");
     }
   }
 
@@ -698,8 +744,8 @@
       <div class="result-detail">${compare}</div>
       <div class="result-banner">${banner}</div>
       <div class="result-actions">
-        <button type="button" onclick="downloadResultImage()">下載結果圖片</button>
-        <button type="button" onclick="shareResult(${JSON.stringify(shareText)})">分享結果給親友</button>
+        <button type="button" onclick="downloadResultImage()">下載成果</button>
+        <button type="button" onclick="playAgain()">再玩一次</button>
       </div>
     `;
 
