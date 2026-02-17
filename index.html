@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
-  <title>過年刮刮樂戰績調查 · 馬年財運大點名</title>
+  <title>過年刮刮樂戰績調查 · 馬年刮刮樂戰績大搜查</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
@@ -36,7 +36,7 @@
     }
 
     .hero-strip {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .hero-banner-wrap {
       position: relative;
@@ -45,36 +45,23 @@
       box-shadow: 0 16px 32px rgba(0,0,0,.5);
       border: 1px solid rgba(248, 250, 252, .4);
     }
-    .hero-banner-wrap::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at bottom, rgba(0,0,0,.25), transparent 55%);
-      pointer-events: none;
-    }
     .hero-banner {
       display: block;
       width: 100%;
       height: auto;
     }
-    .hero-caption {
-      position: absolute;
-      left: 16px;
-      bottom: 10px;
-      color: #fef9c3;
-      text-shadow: 0 2px 4px rgba(0,0,0,.7);
-      font-size: 14px;
+    .hero-text-block {
+      margin-top: 10px;
+      color: #fef2f2;
     }
-
-    .warning {
-      margin: 12px auto 16px;
-      max-width: 680px;
+    .hero-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 4px;
+    }
+    .hero-sub {
       font-size: 14px;
-      color: #b91c1c;
-      background: #fee2e2;
-      border: 1px solid #fecaca;
-      padding: 8px 12px;
-      border-radius: 10px;
+      opacity: .95;
     }
 
     .layout {
@@ -350,6 +337,16 @@
       color: var(--muted);
     }
 
+    .warning-bottom {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #fecaca;
+      background: rgba(0,0,0,.35);
+      border-radius: 10px;
+      padding: 8px 10px;
+      border: 1px solid rgba(248,250,252,.2);
+    }
+
     .step { display: none; }
     .step.active { display: block; animation: fadeIn 0.25s ease-out; }
 
@@ -364,11 +361,12 @@
   <div class="hero-strip">
     <div class="hero-banner-wrap">
       <img src="img/Banner.PNG" alt="馬年刮刮樂" class="hero-banner">
-      <div class="hero-caption">馬年刮刮樂 · 戰績心理測驗版</div>
+    </div>
+    <div class="hero-text-block">
+      <div class="hero-title">馬年刮刮樂戰績大搜查</div>
+      <div class="hero-sub">填完 1 分鐘，看看您是財神、贊助商，還是穩健回本仔。</div>
     </div>
   </div>
-
-  <div class="warning">⚠️ 台灣法規：未滿 18 歲不得購買或兌領彩券（包括刮刮樂）。本問卷僅供滿 18 歲以上民眾分享經驗。</div>
 
   <div class="layout">
     <section class="card" id="form-card">
@@ -389,7 +387,6 @@
             <option>55–64 歲</option>
             <option>65 歲以上</option>
           </select>
-          <div class="hint">提醒：未滿 18 歲不得購買彩券。本問卷僅供成年後的小賭心得分享。</div>
           <div class="nav-buttons">
             <button type="button" data-next>下一題</button>
           </div>
@@ -535,7 +532,6 @@
               </div>
             </label>
           </div>
-          <div class="hint">可勾選實際購買的款式，或最接近的系列。</div>
           <div class="nav-buttons">
             <button type="button" class="back" data-prev>上一題</button>
             <button type="button" data-next>下一題</button>
@@ -546,7 +542,6 @@
         <div class="step" data-step="4">
           <label for="spent">您總共買了多少錢的刮刮樂？（元）</label>
           <input id="spent" name="spent" type="text" inputmode="decimal" pattern="[0-9]*" required>
-          <div class="hint">可以填 0，代表只是幫家人刮、自己沒花錢。</div>
           <div class="nav-buttons">
             <button type="button" class="back" data-prev>上一題</button>
             <button type="button" data-next>下一題</button>
@@ -563,14 +558,13 @@
             </select>
             <input id="won-amount" name="won-amount" type="text" inputmode="decimal" pattern="[0-9]*" placeholder="請輸入金額，例如 5000 或 800" required>
           </div>
-          <div class="hint">例如：賺 5000 請選「+ 賺」並輸入 5000；整體小賠 800 請選「- 賠」並輸入 800；完全沒輸沒贏請選任一符號並輸入 0。</div>
           <div class="nav-buttons">
             <button type="button" class="back" data-prev>上一題</button>
             <button type="submit">送出戰報</button>
           </div>
         </div>
       </form>
-      <div class="footer-note">資料僅用於統計與產生群體戰績，沒有收集聯絡方式。</div>
+      <div class="footer-note">⚠️ 台灣法規：未滿 18 歲不得購買或兌領彩券（包括刮刮樂）。本問卷僅供滿 18 歲以上民眾分享經驗。</div>
     </section>
 
     <section class="card" id="result-card" style="display:none;"></section>
