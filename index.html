@@ -36,39 +36,38 @@
     }
 
     .hero-strip {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
       margin-bottom: 12px;
     }
-    .hero-text {
-      text-align: left;
-      color: #fef2f2;
-    }
-    .hero-title {
-      font-size: 24px;
-      font-weight: 800;
-      margin: 0 0 4px;
-    }
-    .hero-sub {
-      font-size: 14px;
-      opacity: .9;
-    }
-    .hero-visual {
+    .hero-banner-wrap {
       position: relative;
-      width: 180px;
-      height: auto;
+      overflow: hidden;
+      border-radius: 18px;
+      box-shadow: 0 16px 32px rgba(0,0,0,.5);
+      border: 1px solid rgba(248, 250, 252, .4);
+    }
+    .hero-banner-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at bottom, rgba(0,0,0,.25), transparent 55%);
+      pointer-events: none;
     }
     .hero-banner {
-      width: 100%;
-      border-radius: 14px;
-      box-shadow: 0 10px 20px rgba(0,0,0,.4);
       display: block;
+      width: 100%;
+      height: auto;
+    }
+    .hero-caption {
+      position: absolute;
+      left: 16px;
+      bottom: 10px;
+      color: #fef9c3;
+      text-shadow: 0 2px 4px rgba(0,0,0,.7);
+      font-size: 14px;
     }
 
     .warning {
-      margin: 8px auto 16px;
+      margin: 12px auto 16px;
       max-width: 680px;
       font-size: 14px;
       color: #b91c1c;
@@ -363,12 +362,9 @@
 <body>
 <div class="wrap">
   <div class="hero-strip">
-    <div class="hero-text">
-      <div class="hero-title">🧧 馬年刮刮樂戰績大調查</div>
-      <div class="hero-sub">填完 1 分鐘，看看您是財神、贊助商，還是穩健回本仔。</div>
-    </div>
-    <div class="hero-visual">
+    <div class="hero-banner-wrap">
       <img src="img/Banner.PNG" alt="馬年刮刮樂" class="hero-banner">
+      <div class="hero-caption">馬年刮刮樂 · 戰績心理測驗版</div>
     </div>
   </div>
 
@@ -718,10 +714,7 @@
     const net = won - spent;
     const roi = spent > 0 ? (net / spent) * 100 : 0;
 
-    // 先嘗試從 Google Sheets 拿真實分布百分位
     let percentile = await getPercentileFromSheet(roi);
-
-    // 若無法取得，退回原本模擬規則
     if (percentile === null) {
       if (spent === 0) {
         percentile = 50;
